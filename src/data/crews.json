@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "jinjo-crew",
+    "name": "Jinjo Crew",
+    "koreanName": "진조크루",
+    "foundedYear": 2001,
+    "region": "seoul",
+    "genres": ["bboying"],
+    "description": "한국을 대표하는 비보이 크루. R16, BOTY, UK BBoy Championships 등 세계 메이저 대회 다수 우승.",
+    "instagramUrl": "https://instagram.com/jinjocrew",
+    "tags": ["레전드", "월드클래스"]
+  },
+  {
+    "slug": "gamblerz",
+    "name": "Gamblerz",
+    "koreanName": "갬블러즈",
+    "foundedYear": 2002,
+    "region": "seoul",
+    "genres": ["bboying"],
+    "description": "2000년대 초반 결성된 한국 비보이 크루.",
+    "tags": ["레전드"]
+  },
+  {
+    "slug": "morning-of-owl",
+    "name": "Morning of Owl",
+    "koreanName": "모닝오브아울",
+    "region": "seoul",
+    "genres": ["bboying"],
+    "description": "2010년대부터 활동한 비보이 크루.",
+    "tags": ["메이저"]
+  }
+]

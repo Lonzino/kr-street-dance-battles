@@ -1,0 +1,139 @@
+[
+  {
+    "slug": "r16-korea-2026",
+    "title": "R16 KOREA 2026",
+    "subtitle": "World Bboy Championship",
+    "description": "한국에서 열리는 세계 최대 규모의 비보이 월드 챔피언십. 전 세계 각국의 비보이들이 참가하는 국제대회.",
+    "date": "2026-07-18",
+    "endDate": "2026-07-20",
+    "registrationDeadline": "2026-06-15",
+    "genres": ["bboying"],
+    "formats": ["1v1", "crewBattle"],
+    "status": "upcoming",
+    "venue": {
+      "name": "올림픽공원 SK핸드볼경기장",
+      "address": "서울 송파구 올림픽로 424",
+      "region": "seoul"
+    },
+    "organizer": "R16 KOREA",
+    "judges": ["Born", "Physicx", "Pocket"],
+    "prize": [
+      { "rank": "Crew Battle 우승", "amount": 10000000 },
+      { "rank": "1v1 우승", "amount": 3000000 }
+    ],
+    "links": [
+      { "label": "공식 인스타그램", "url": "https://instagram.com/r16korea", "type": "instagram" }
+    ],
+    "tags": ["국제대회", "월드클래스"]
+  },
+  {
+    "slug": "bucheon-hiphop-festival-2026",
+    "title": "부천 힙합 페스티벌 2026",
+    "subtitle": "Bucheon Hip-Hop Festival",
+    "description": "부천시 주최 힙합 댄스 페스티벌. 힙합/팝핑/락킹 3종목 배틀.",
+    "date": "2026-05-04",
+    "registrationDeadline": "2026-04-20",
+    "genres": ["hiphop", "popping", "locking"],
+    "formats": ["1v1"],
+    "status": "registration",
+    "venue": {
+      "name": "부천시민회관",
+      "address": "경기 부천시 원미구 길주로 74",
+      "region": "gyeonggi"
+    },
+    "organizer": "부천문화재단",
+    "prize": [
+      { "rank": "장르별 우승", "amount": 1500000 },
+      { "rank": "준우승", "amount": 500000 }
+    ],
+    "entryFee": 20000,
+    "links": [
+      { "label": "참가 신청", "url": "https://bcf.or.kr", "type": "registration" }
+    ],
+    "tags": ["시민문화축제"]
+  },
+  {
+    "slug": "seoul-street-cypher-2026-q2",
+    "title": "Seoul Street Cypher Vol.8",
+    "description": "매 분기 열리는 서울 스트릿 사이퍼. 올스타일 1on1 배틀.",
+    "date": "2026-04-26",
+    "genres": ["allstyle"],
+    "formats": ["1v1", "cypher"],
+    "status": "upcoming",
+    "venue": {
+      "name": "서울숲 언더스테이지",
+      "address": "서울 성동구 서울숲길 49",
+      "region": "seoul"
+    },
+    "organizer": "Street Cypher Crew",
+    "entryFee": 15000,
+    "links": [
+      { "label": "인스타그램", "url": "https://instagram.com/seoulstreetcypher", "type": "instagram" }
+    ],
+    "tags": ["정기대회", "올스타일"]
+  },
+  {
+    "slug": "busan-waack-night-2026",
+    "title": "Busan Waack Night 2026",
+    "description": "부산 왁킹 씬의 대표 이벤트. 왁킹 전문 1on1.",
+    "date": "2026-06-08",
+    "genres": ["waacking"],
+    "formats": ["1v1"],
+    "status": "upcoming",
+    "venue": {
+      "name": "부산 F1963",
+      "address": "부산 수영구 구락로123번길 20",
+      "region": "busan"
+    },
+    "organizer": "Busan Waack Collective",
+    "entryFee": 25000,
+    "links": [
+      { "label": "공식 계정", "url": "https://instagram.com/busanwaack", "type": "instagram" }
+    ],
+    "tags": ["지역씬", "왁킹"]
+  },
+  {
+    "slug": "battle-of-the-year-korea-2025",
+    "title": "Battle of the Year Korea 2025",
+    "subtitle": "BOTY Korea National Final",
+    "description": "세계 최대 크루 배틀 BOTY의 한국 본선 대회.",
+    "date": "2025-10-12",
+    "genres": ["bboying"],
+    "formats": ["crewBattle", "showcase"],
+    "status": "finished",
+    "venue": {
+      "name": "블루스퀘어 마스터카드홀",
+      "address": "서울 용산구 이태원로 294",
+      "region": "seoul"
+    },
+    "organizer": "BOTY Korea",
+    "prize": [
+      { "rank": "우승", "amount": 5000000, "note": "BOTY World Final 진출권" }
+    ],
+    "results": [
+      { "rank": 1, "crew": "Jinjo Crew" },
+      { "rank": 2, "crew": "Gamblerz" },
+      { "rank": 3, "crew": "Morning of Owl" }
+    ],
+    "links": [],
+    "tags": ["국제대회 예선"]
+  },
+  {
+    "slug": "daegu-locking-session-2026",
+    "title": "대구 락킹 세션 Vol.3",
+    "description": "대구 지역 락킹 1on1 배틀.",
+    "date": "2026-05-24",
+    "genres": ["locking"],
+    "formats": ["1v1"],
+    "status": "upcoming",
+    "venue": {
+      "name": "대구문화예술회관",
+      "address": "대구 달서구 공원순환로 201",
+      "region": "daegu"
+    },
+    "organizer": "Daegu Lockers Union",
+    "entryFee": 20000,
+    "links": [],
+    "tags": ["지역씬"]
+  }
+]
