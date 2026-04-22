@@ -30,14 +30,16 @@
 - [ ] 과거 배틀 아카이브 (2020~2025 우승 결과)
 
 ### UX 기본기
-- [ ] **필터링 UI** — 장르/지역/포맷/날짜 (URL 쿼리 파라미터 기반)
+- [x] **필터링 UI** — 장르/지역/상태 칩 (URL 쿼리, JS 없이) ✅ 2026-04-23
+- [x] **크루 상세 페이지** — `/crews/[slug]` + 배틀↔크루 상호 링크 ✅ 2026-04-23
 - [ ] **검색** — 제목/설명/태그 풀텍스트 (Postgres `tsvector` 또는 pg_trgm)
 - [ ] **모바일 최적화 점검** — 실제 폰 화면에서 모든 페이지 검수
 - [ ] **포스터 이미지 업로드** — Supabase Storage 또는 R2 연동
-- [ ] **og:image 동적 생성** — `opengraph-image.tsx` (배틀 상세 SNS 공유 시)
-- [ ] **sitemap.ts + robots.ts** — SEO 기본
-- [ ] **404 / error.tsx 커스텀 페이지** — 현재 디폴트
-- [ ] **로딩 스켈레톤** — `loading.tsx` 각 라우트
+- [x] **og:image 동적 생성** — 사이트+배틀별 (한글 폰트는 추후) ✅ 2026-04-23
+- [x] **sitemap.ts + robots.ts** — SEO 기본 ✅ 2026-04-23
+- [x] **JSON-LD DanceEvent** — 구글 리치 결과 ✅ 2026-04-23
+- [x] **404 / error.tsx 커스텀 페이지** ✅ 2026-04-23
+- [x] **로딩 스켈레톤** — `loading.tsx` ✅ 2026-04-23
 
 ### 신뢰성
 - [ ] **이미지·텍스트 데이터 출처 표기** — 각 배틀에 `source_url` 노출 (이미 DB엔 있음)
@@ -48,8 +50,9 @@
 ## 🔧 Medium — 자동화·확장
 
 ### 데이터 수집 자동화
-- [ ] **Discord 봇** — `#배틀제보` 채널 메시지 → `ingest:url` 자동 호출
-- [ ] **Vercel Cron** — 매일 0시 본인 인스타 계정 polling (Graph API)
+- [x] **Discord 봇** — `#배틀제보` 채널 → `/api/ingest` (services/discord-bot/) ✅ 2026-04-23
+- [x] **Vercel Cron** — 매일 자정 배틀 상태 자동 갱신 (`/api/cron/refresh-status`) ✅ 2026-04-23
+- [ ] **본인 인스타 Graph API** — Vercel Cron으로 새 포스트 polling
 - [ ] **YouTube Data API** — 결과 영상 자동 수집 (대회명 키워드)
 - [ ] **공식 사이트 어댑터 추가** — KDO, BBIC, R16 등 정형화된 사이트
 - [ ] **포스터 OCR** — 이미지 속 텍스트 → 배틀 정보 추출 (Claude Vision)
@@ -105,8 +108,8 @@
 
 ## 🧪 CI / 코드 품질
 
-- [ ] **ESLint 재설정** — 프로젝트 생성 시 `--no-eslint`로 스킵했음
-- [ ] **Prettier 또는 Biome** — 일관된 포맷
+- [x] **Biome** — 린터+포매터 통합 (`npm run lint`, `lint:fix`, `format`) ✅ 2026-04-23
+- [x] **CI에 lint + validate-data + build 통합** ✅ 2026-04-23
 - [ ] **PR preview 배포** — Vercel이 자동 처리하지만 한 번 검증
 - [ ] **단위 테스트** — `lib/labels.ts` 같은 순수 함수 (vitest)
 - [ ] **E2E** — Playwright로 핵심 흐름 (로그인 → 큐 → 승인) 1~2개
@@ -146,3 +149,4 @@
 ## 변경 이력
 
 - 2026-04-23: 초안 작성 (스캐폴드 + 자동화 루프 완성 시점)
+- 2026-04-23: Round 1~4 완료 (필터/크루상세/SEO/Biome/Discord봇/Cron)
