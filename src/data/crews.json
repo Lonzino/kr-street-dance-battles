@@ -6,9 +6,10 @@
     "foundedYear": 2001,
     "region": "seoul",
     "genres": ["bboying"],
-    "description": "한국을 대표하는 비보이 크루. R16, BOTY, UK BBoy Championships 등 세계 메이저 대회 다수 우승.",
+    "description": "한국을 대표하는 비보이 크루. R16, BOTY, UK B-Boy Championships, Freestyle Session 등 세계 메이저 대회 다수 우승(그랜드슬램 달성 크루). 2016~2023 BBIC(부천 세계 비보이 챔피언십) 주관. Wing·홍텐 등 레전드 멤버 배출. 2026 Break The Floor 우승.",
     "instagramUrl": "https://instagram.com/jinjocrew",
-    "tags": ["레전드", "월드클래스"]
+    "youtubeUrl": "https://www.youtube.com/user/JINJOCREW2001",
+    "tags": ["레전드", "월드클래스", "그랜드슬램"]
   },
   {
     "slug": "gamblerz",
@@ -17,8 +18,8 @@
     "foundedYear": 2002,
     "region": "seoul",
     "genres": ["bboying"],
-    "description": "2000년대 초반 결성된 한국 비보이 크루.",
-    "tags": ["레전드"]
+    "description": "2000년대 초반 결성된 한국 비보이 크루. BOTY·R16 등 메이저 대회 우승 경력. 파리 올림픽 브레이킹 코치·감독 배출. 서울스트릿댄스페스티벌 올스타일 2:2 주관.",
+    "tags": ["레전드", "올림픽 코치", "이벤트 주관"]
   },
   {
     "slug": "morning-of-owl",
@@ -26,7 +27,70 @@
     "koreanName": "모닝오브아울",
     "region": "seoul",
     "genres": ["bboying"],
-    "description": "2010년대부터 활동한 비보이 크루.",
+    "description": "한국을 대표하는 비보이 크루 중 하나. R16 Korea 등 국제 대회 우승 경력.",
     "tags": ["메이저"]
+  },
+  {
+    "slug": "last-for-one",
+    "name": "Last For One",
+    "koreanName": "라스트포원",
+    "region": "jeonbuk",
+    "genres": ["bboying"],
+    "description": "전주 기반 비보이 크루. 2005 Battle of the Year 세계 챔피언. 2007년부터 전주비보이그랑프리(JBGP) 주관 — 한국 최고(最古) 브레이킹 크루 배틀 대회.",
+    "tags": ["레전드", "BOTY 월드 챔피언", "JBGP 주관"]
+  },
+  {
+    "slug": "club-into-the-deep",
+    "name": "Club Into the Deep",
+    "koreanName": "클럽 인투더딥",
+    "region": "seoul",
+    "genres": ["bboying"],
+    "description": "2025 제18회 전주비보이그랑프리(JBGP) 우승 크루.",
+    "tags": ["현역 챔피언"]
+  },
+  {
+    "slug": "bitgoeul-dancers",
+    "name": "Bitgoeul Dancers",
+    "koreanName": "빛고을댄서스",
+    "region": "gwangju",
+    "genres": ["hiphop", "popping", "locking", "waacking"],
+    "description": "광주 기반 스트릿 댄스 협업체. 배틀 라인업(LINE UP) 시리즈 주관 — 2026년 시즌 11까지 이어져 온 한국 대표 멀티 장르 배틀.",
+    "instagramUrl": "https://www.instagram.com/lineup_battle/",
+    "tags": ["이벤트 주관", "광주"]
+  },
+  {
+    "slug": "team-blackout",
+    "name": "Team Blackout",
+    "region": "seoul",
+    "genres": ["krump"],
+    "description": "한국 크럼프 대표 크루. 국내 세션·배틀 운영.",
+    "instagramUrl": "https://www.instagram.com/team.blackout_official/",
+    "tags": ["크럼프"]
+  },
+  {
+    "slug": "prime-kingz",
+    "name": "Prime Kingz",
+    "koreanName": "프라임킹즈",
+    "region": "seoul",
+    "genres": ["krump"],
+    "description": "한국·아시아 크럼프 씬 대표 크루. Monster Woo Fam 계보 연결. '스트릿 맨 파이터' 출연.",
+    "tags": ["크럼프", "스맨파"]
+  },
+  {
+    "slug": "house-of-love",
+    "name": "House of Love",
+    "region": "seoul",
+    "genres": ["voguing"],
+    "description": "한국 최초의 Kiki 하우스 (2018 창설, 리더 Love Ran). 한국 보깅·볼룸 씬의 출발점.",
+    "tags": ["보깅", "Kiki 하우스", "한국 1호"]
+  },
+  {
+    "slug": "house-of-kitsch",
+    "name": "International Kiki House of Kitsch",
+    "region": "seoul",
+    "genres": ["voguing"],
+    "description": "한국 Kiki 하우스. SHHH!! Kiki Ball, Blue Balls Kiki 등 다수 볼 주관.",
+    "instagramUrl": "https://www.instagram.com/houseofkitsch_official/",
+    "tags": ["보깅", "Kiki 하우스"]
   }
 ]
