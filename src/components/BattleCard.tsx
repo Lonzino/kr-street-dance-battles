@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Battle } from "@/types";
+import type { Battle } from "@/schema";
 import {
   formatDateKR,
   formatKRW,

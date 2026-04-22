@@ -9,80 +9,92 @@
 - 전국 스트릿 댄스 배틀 일정 (접수중 · 예정 · 종료 아카이브)
 - 배틀 상세 (장소 · 주최 · 심사위원 · 상금 · 결과)
 - 크루 디렉토리
-- 장르 / 포맷 / 지역 필터링 (예정)
+- LLM 기반 자동 데이터 수집 + 휴먼 검토 큐 (`/admin`)
 
 ## 기술 스택
 
 - **Next.js 16** (App Router, Turbopack)
-- **React 19**
-- **TypeScript**
-- **Tailwind CSS v4**
-- 데이터: JSON 파일 (MVP) → 추후 DB 연동 예정
+- **React 19** + **TypeScript** + **Tailwind CSS v4**
+- **Zod** (단일 진실 스키마)
+- **Drizzle ORM** + **PostgreSQL** (Supabase)
+- **Anthropic Claude** (LLM 추출)
 
-## 개발
+## 개발 (DB 없이)
 
 ```bash
 npm install
-npm run dev
+npm run dev          # http://localhost:3000
+npm run validate-data  # JSON ↔ Zod 검증
 ```
 
-http://localhost:3000 에서 확인.
+이 상태로 정적 데이터(`src/data/*.json`) 기반 사이트가 동작.
 
-## 배틀 정보 제보 / 수정
+## 자동화 활성화
 
-1. **GitHub Issue**: 간단한 정보 제보 · 오탈자 신고는 [이슈](https://github.com/Lonzino/kr-street-dance-battles/issues)로
-2. **Pull Request**: 직접 데이터 추가는 `src/data/battles.json` 또는 `src/data/crews.json` 수정 후 PR
+자세한 설정: [docs/setup.md](./docs/setup.md)
 
-### 배틀 데이터 스키마
+```bash
+cp .env.example .env.local
+# DATABASE_URL + ANTHROPIC_API_KEY 채우기
 
-```typescript
-{
-  slug: "unique-url-slug",
-  title: "대회명",
-  subtitle: "부제 (선택)",
-  description: "소개",
-  date: "2026-07-18",          // ISO 날짜
-  endDate: "2026-07-20",       // 다일 대회면 종료일
-  registrationDeadline: "2026-06-15",
-  genres: ["bboying", "popping"],  // battle.ts 참조
-  formats: ["1v1", "crewBattle"],
-  status: "upcoming",          // registration | ongoing | finished | cancelled
-  venue: {
-    name: "장소명",
-    address: "주소",
-    region: "seoul"            // 17개 광역 + online
-  },
-  organizer: "주최",
-  judges: ["Judge1", "Judge2"],
-  prize: [{ rank: "우승", amount: 10000000 }],
-  entryFee: 20000,
-  links: [{ label: "인스타", url: "...", type: "instagram" }],
-  results: [{ rank: 1, crew: "Jinjo Crew" }],
-  tags: ["국제대회"]
-}
+npm run db:push      # Supabase에 스키마 적용
+npm run seed         # JSON 데이터 → DB 마이그레이션
+
+# 인스타 URL 또는 텍스트로 자동 수집 → 검토 큐
+npm run ingest:url -- "https://www.instagram.com/p/XXXX"
 ```
+
+검토는 http://localhost:3000/admin/queue 에서.
 
 ## 구조
 
 ```
 src/
-├── app/
-│   ├── page.tsx                  # 홈 (배틀 리스트)
-│   ├── battles/[slug]/page.tsx   # 배틀 상세
-│   ├── crews/page.tsx            # 크루 디렉토리
-│   ├── about/page.tsx            # 프로젝트 소개
-│   └── layout.tsx                # 공통 헤더/푸터
+├── app/                # Next.js 라우트
+│   ├── (public)        # 홈, /battles/[slug], /crews, /about
+│   └── admin/          # 관리자 (인증 미구현 — 배포 전 필수)
+├── schema/             # ★ Zod 단일 진실 (DB·Frontend·Ingestion 공유)
+├── db/                 # Drizzle ORM
+├── ingestion/          # 데이터 수집
+│   ├── sources/        # Instagram, Manual 어댑터
+│   ├── parsers/        # LLM 추출 (Claude API)
+│   └── pipeline.ts
 ├── components/
-│   └── BattleCard.tsx
-├── data/
-│   ├── battles.json              # 배틀 데이터
-│   └── crews.json                # 크루 데이터
 ├── lib/
-│   ├── data.ts                   # 데이터 조회 헬퍼
-│   └── labels.ts                 # 한글 라벨 · 포맷터
-└── types/                        # TypeScript 타입 정의
+└── data/               # JSON 시드 (DB 백업용)
+
+scripts/
+├── validate-data.ts    # CI: 무결성 검증
+├── seed.ts             # JSON → DB
+└── ingest-url.ts       # CLI 수집
+
+docs/
+├── architecture.md     # 데이터 흐름 + 디렉토리
+├── setup.md            # Supabase + LLM 활성화
+└── data-sources.md     # 합법적 수집 전략
 ```
+
+## 배틀 정보 제보 / 수정
+
+- **GitHub Issue**: [이슈로 제보](https://github.com/Lonzino/kr-street-dance-battles/issues)
+- **Pull Request**: `src/data/battles.json` / `src/data/crews.json` 수정 → PR
+  - CI가 Zod 스키마로 자동 검증
+
+### 데이터 스키마
+
+런타임 검증되는 단일 진실: [`src/schema/battle.ts`](./src/schema/battle.ts), [`src/schema/crew.ts`](./src/schema/crew.ts)
+
+## 로드맵
+
+- [x] MVP: JSON 기반 사이트
+- [x] Zod 스키마 + Drizzle DB 레이어
+- [x] LLM 수집 + 검토 큐 스켈레톤
+- [ ] Admin 인증 (Clerk 또는 Supabase Auth)
+- [ ] Vercel 배포
+- [ ] Discord 봇 (제보 채널 → 자동 ingest)
+- [ ] 본인 인스타 계정 자동 polling (Graph API)
+- [ ] 필터링 UI (장르 / 지역 / 포맷)
 
 ## 라이선스
 
-데이터(`src/data/*.json`)는 CC0 (공공정보). 코드는 MIT.
+데이터(`src/data/*.json`) CC0 · 코드 MIT

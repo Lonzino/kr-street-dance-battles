@@ -1,4 +1,4 @@
-import type { BattleFormat, BattleStatus, DanceGenre, Region } from "@/types";
+import type { BattleFormat, BattleStatus, DanceGenre, Region } from "@/schema";
 
 export const genreLabel: Record<DanceGenre, string> = {
   bboying: "비보잉",

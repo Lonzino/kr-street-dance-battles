@@ -1,6 +1,6 @@
 import { BattleCard } from "@/components/BattleCard";
 import { getAllBattles } from "@/lib/data";
-import type { Battle, BattleStatus } from "@/types";
+import type { Battle, BattleStatus } from "@/schema";
 
 const GROUPS: { status: BattleStatus | "active"; title: string; desc?: string }[] = [
   { status: "active", title: "지금 진행중·접수중", desc: "참가 신청이 열려있거나 곧 열리는 배틀" },

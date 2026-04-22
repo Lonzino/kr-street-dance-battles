@@ -1,9 +1,17 @@
 import battlesJson from "@/data/battles.json";
 import crewsJson from "@/data/crews.json";
-import type { Battle, BattleStatus, Crew, DanceGenre, Region } from "@/types";
+import {
+  type Battle,
+  BattleArray,
+  type BattleStatus,
+  type Crew,
+  CrewArray,
+  type DanceGenre,
+  type Region,
+} from "@/schema";
 
-const battles = battlesJson as Battle[];
-const crews = crewsJson as Crew[];
+const battles = BattleArray.parse(battlesJson);
+const crews = CrewArray.parse(crewsJson);
 
 export function getAllBattles(): Battle[] {
   return [...battles].sort((a, b) => a.date.localeCompare(b.date));
