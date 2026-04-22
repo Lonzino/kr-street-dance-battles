@@ -27,7 +27,8 @@ export default async function HomePage({
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
       <section className="mb-10">
         <h1 className="font-display text-5xl tracking-wide sm:text-7xl">
-          한국 스트릿 댄스<br />
+          한국 스트릿 댄스
+          <br />
           <span className="text-accent">배틀 아카이브</span>
         </h1>
         <p className="mt-4 max-w-2xl text-sm text-muted-foreground sm:text-base">
@@ -37,9 +38,7 @@ export default async function HomePage({
           <Stat label="전체 배틀" value={all.length} />
           <Stat
             label="접수중·진행중"
-            value={
-              all.filter((b) => b.status === "registration" || b.status === "ongoing").length
-            }
+            value={all.filter((b) => b.status === "registration" || b.status === "ongoing").length}
             highlight
           />
           <Stat
@@ -87,9 +86,7 @@ function FilteredList({ battles, totalCount }: { battles: Battle[]; totalCount: 
 }
 
 function GroupedList({ battles, now }: { battles: Battle[]; now: Date }) {
-  const active = battles.filter(
-    (b) => b.status === "registration" || b.status === "ongoing",
-  );
+  const active = battles.filter((b) => b.status === "registration" || b.status === "ongoing");
   const upcoming = battles
     .filter((b) => b.status === "upcoming" && new Date(b.date) >= now)
     .slice(0, 12);
@@ -110,9 +107,7 @@ function GroupedList({ battles, now }: { battles: Battle[]; now: Date }) {
             <header className="mb-4 flex items-end justify-between">
               <div>
                 <h2 className="text-xl font-bold sm:text-2xl">{group.title}</h2>
-                {group.desc && (
-                  <p className="mt-1 text-xs text-muted-foreground">{group.desc}</p>
-                )}
+                {group.desc && <p className="mt-1 text-xs text-muted-foreground">{group.desc}</p>}
               </div>
               <span className="text-xs text-muted-foreground">{items.length}건</span>
             </header>
@@ -128,21 +123,11 @@ function GroupedList({ battles, now }: { battles: Battle[]; now: Date }) {
   );
 }
 
-function Stat({
-  label,
-  value,
-  highlight,
-}: {
-  label: string;
-  value: number;
-  highlight?: boolean;
-}) {
+function Stat({ label, value, highlight }: { label: string; value: number; highlight?: boolean }) {
   return (
     <div
       className={`rounded-lg border px-3 py-2 ${
-        highlight
-          ? "border-accent/40 bg-accent/10 text-accent"
-          : "border-border bg-muted/30"
+        highlight ? "border-accent/40 bg-accent/10 text-accent" : "border-border bg-muted/30"
       }`}
     >
       <span className="mr-2 text-[10px] uppercase tracking-wider">{label}</span>

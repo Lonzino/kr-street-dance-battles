@@ -1,7 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { eq, sql } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { getDb, isDbConfigured, schema } from "@/db/client";
 import { Battle } from "@/schema";
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans_KR, Bebas_Neue } from "next/font/google";
+import { Bebas_Neue, Noto_Sans_KR } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 
@@ -20,7 +20,8 @@ export const metadata: Metadata = {
     default: "KR Street Dance Battles",
     template: "%s · KR Street Dance Battles",
   },
-  description: "한국 스트릿 댄스 배틀 정보 아카이브. 비보잉, 팝핑, 락킹, 왁킹 등 장르별 국내외 대회 일정과 결과를 한 곳에.",
+  description:
+    "한국 스트릿 댄스 배틀 정보 아카이브. 비보잉, 팝핑, 락킹, 왁킹 등 장르별 국내외 대회 일정과 결과를 한 곳에.",
   keywords: ["스트릿댄스", "댄스배틀", "비보이", "팝핑", "락킹", "왁킹", "배틀일정", "댄스크루"],
 };
 

@@ -1,16 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
-import {
-  getAllCrewSlugs,
-  getBattlesByCrew,
-  getCrewBySlug,
-} from "@/lib/data";
-import {
-  formatDateKR,
-  genreLabel,
-  regionLabel,
-} from "@/lib/labels";
+import { getAllCrewSlugs, getBattlesByCrew, getCrewBySlug } from "@/lib/data";
+import { formatDateKR, genreLabel, regionLabel } from "@/lib/labels";
 
 export async function generateStaticParams() {
   return getAllCrewSlugs().map((slug) => ({ slug }));
@@ -30,11 +22,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function CrewDetailPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function CrewDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const crew = getCrewBySlug(slug);
   if (!crew) notFound();
@@ -52,13 +40,9 @@ export default async function CrewDetailPage({
 
       <header className="mb-8 border-b border-border pb-8">
         <div className="flex flex-wrap items-baseline gap-3">
-          <h1 className="font-display text-4xl tracking-wide sm:text-5xl">
-            {crew.name}
-          </h1>
+          <h1 className="font-display text-4xl tracking-wide sm:text-5xl">{crew.name}</h1>
           {crew.foundedYear && (
-            <span className="text-sm text-muted-foreground">
-              est. {crew.foundedYear}
-            </span>
+            <span className="text-sm text-muted-foreground">est. {crew.foundedYear}</span>
           )}
         </div>
         {crew.koreanName && (
@@ -89,10 +73,7 @@ export default async function CrewDetailPage({
             <Section title="배틀 기록">
               <ul className="space-y-2">
                 {battles.map(({ battle, rank }) => (
-                  <li
-                    key={battle.slug}
-                    className="flex items-baseline gap-3 text-sm"
-                  >
+                  <li key={battle.slug} className="flex items-baseline gap-3 text-sm">
                     <span className="w-12 font-display text-accent">{rank}위</span>
                     <Link
                       href={`/battles/${battle.slug}`}
@@ -113,10 +94,7 @@ export default async function CrewDetailPage({
             <Section title="태그">
               <div className="flex flex-wrap gap-1.5">
                 {crew.tags.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded bg-muted/60 px-2 py-0.5 text-xs"
-                  >
+                  <span key={t} className="rounded bg-muted/60 px-2 py-0.5 text-xs">
                     {t}
                   </span>
                 ))}

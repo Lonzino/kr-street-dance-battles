@@ -1,5 +1,4 @@
 import Link from "next/link";
-import type { Battle } from "@/schema";
 import {
   formatDateKR,
   formatKRW,
@@ -9,6 +8,7 @@ import {
   statusColor,
   statusLabel,
 } from "@/lib/labels";
+import type { Battle } from "@/schema";
 
 export function BattleCard({ battle }: { battle: Battle }) {
   const topPrize = battle.prize?.[0];
@@ -32,28 +32,18 @@ export function BattleCard({ battle }: { battle: Battle }) {
       </div>
 
       <div>
-        <h3 className="text-lg font-bold leading-tight group-hover:text-accent">
-          {battle.title}
-        </h3>
-        {battle.subtitle && (
-          <p className="mt-1 text-xs text-muted-foreground">{battle.subtitle}</p>
-        )}
+        <h3 className="text-lg font-bold leading-tight group-hover:text-accent">{battle.title}</h3>
+        {battle.subtitle && <p className="mt-1 text-xs text-muted-foreground">{battle.subtitle}</p>}
       </div>
 
       <div className="flex flex-wrap gap-1.5 text-xs">
         {battle.genres.map((g) => (
-          <span
-            key={g}
-            className="rounded bg-foreground/10 px-2 py-0.5 text-foreground/90"
-          >
+          <span key={g} className="rounded bg-foreground/10 px-2 py-0.5 text-foreground/90">
             {genreLabel[g]}
           </span>
         ))}
         {battle.formats.map((f) => (
-          <span
-            key={f}
-            className="rounded border border-border px-2 py-0.5 text-muted-foreground"
-          >
+          <span key={f} className="rounded border border-border px-2 py-0.5 text-muted-foreground">
             {formatLabel[f]}
           </span>
         ))}
@@ -64,9 +54,7 @@ export function BattleCard({ battle }: { battle: Battle }) {
           {regionLabel[battle.venue.region]} · {battle.venue.name}
         </span>
         {topPrize?.amount && (
-          <span className="font-medium text-accent">
-            {formatKRW(topPrize.amount)}
-          </span>
+          <span className="font-medium text-accent">{formatKRW(topPrize.amount)}</span>
         )}
       </div>
     </Link>

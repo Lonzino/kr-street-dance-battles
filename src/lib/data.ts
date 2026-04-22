@@ -62,11 +62,8 @@ export function getBattlesByCrew(crew: Crew): { battle: Battle; rank: number }[]
  */
 export function findCrewSlugByName(name: string): string | undefined {
   const lower = name.toLowerCase();
-  return crews.find(
-    (c) =>
-      c.name.toLowerCase() === lower ||
-      c.koreanName?.toLowerCase() === lower,
-  )?.slug;
+  return crews.find((c) => c.name.toLowerCase() === lower || c.koreanName?.toLowerCase() === lower)
+    ?.slug;
 }
 
 export function filterBattles(opts: {

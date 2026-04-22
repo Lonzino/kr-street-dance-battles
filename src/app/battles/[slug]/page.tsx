@@ -1,6 +1,6 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import { findCrewSlugByName, getAllBattleSlugs, getBattleBySlug } from "@/lib/data";
 import {
   formatDateKR,
@@ -30,11 +30,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function BattleDetailPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function BattleDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const battle = getBattleBySlug(slug);
   if (!battle) notFound();
@@ -112,10 +108,7 @@ export default async function BattleDetailPage({
           <Section title="종목">
             <div className="flex flex-wrap gap-2">
               {battle.genres.map((g) => (
-                <span
-                  key={g}
-                  className="rounded-md bg-foreground/10 px-3 py-1 text-sm"
-                >
+                <span key={g} className="rounded-md bg-foreground/10 px-3 py-1 text-sm">
                   {genreLabel[g]}
                 </span>
               ))}
@@ -164,10 +157,7 @@ export default async function BattleDetailPage({
                     <li key={r.rank} className="flex items-baseline gap-3 text-sm">
                       <span className="w-8 font-display text-accent">{r.rank}위</span>
                       {crewSlug ? (
-                        <Link
-                          href={`/crews/${crewSlug}`}
-                          className="font-medium hover:text-accent"
-                        >
+                        <Link href={`/crews/${crewSlug}`} className="font-medium hover:text-accent">
                           {name}
                         </Link>
                       ) : (

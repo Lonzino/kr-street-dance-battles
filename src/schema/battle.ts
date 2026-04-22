@@ -30,9 +30,7 @@ export const BattleResult = z.object({
 });
 export type BattleResult = z.infer<typeof BattleResult>;
 
-const isoDate = z
-  .string()
-  .regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD format required");
+const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD format required");
 
 export const Battle = z.object({
   slug: z.string().regex(/^[a-z0-9-]+$/, "lowercase, dash-separated"),

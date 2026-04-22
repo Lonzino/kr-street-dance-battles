@@ -35,15 +35,10 @@ export default async function ReviewQueue() {
       ) : (
         <div className="space-y-4">
           {records.map((r) => (
-            <article
-              key={r.id}
-              className="rounded-lg border border-border bg-muted/30 p-5"
-            >
+            <article key={r.id} className="rounded-lg border border-border bg-muted/30 p-5">
               <header className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 text-xs">
-                  <span className="rounded bg-foreground/10 px-2 py-0.5">
-                    {r.sourceType}
-                  </span>
+                  <span className="rounded bg-foreground/10 px-2 py-0.5">{r.sourceType}</span>
                   <span
                     className={`text-muted-foreground ${
                       (r.parseConfidence ?? 0) < 0.6 ? "text-amber-300" : ""

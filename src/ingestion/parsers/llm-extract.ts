@@ -60,9 +60,7 @@ export async function extractBattleFromText(
       {
         type: "text",
         text: SYSTEM_PROMPT,
-        ...(opts.cacheSystemPrompt !== false
-          ? { cache_control: { type: "ephemeral" } }
-          : {}),
+        ...(opts.cacheSystemPrompt !== false ? { cache_control: { type: "ephemeral" } } : {}),
       },
     ],
     messages: [

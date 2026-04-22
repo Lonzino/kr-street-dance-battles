@@ -6,56 +6,54 @@ export const contentType = "image/png";
 
 export default async function Image() {
   return new ImageResponse(
-    (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        padding: "80px",
+        background: "linear-gradient(135deg, #0a0a0b 0%, #1a1a1d 100%)",
+        color: "#fafafa",
+        fontFamily: "system-ui, sans-serif",
+      }}
+    >
       <div
         style={{
-          width: "100%",
-          height: "100%",
+          fontSize: 32,
+          color: "#f97316",
+          letterSpacing: "0.2em",
+          marginBottom: 24,
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: "80px",
-          background: "linear-gradient(135deg, #0a0a0b 0%, #1a1a1d 100%)",
-          color: "#fafafa",
-          fontFamily: "system-ui, sans-serif",
         }}
       >
-        <div
-          style={{
-            fontSize: 32,
-            color: "#f97316",
-            letterSpacing: "0.2em",
-            marginBottom: 24,
-            display: "flex",
-          }}
-        >
-          KR
-        </div>
-        <div
-          style={{
-            fontSize: 96,
-            fontWeight: 900,
-            lineHeight: 1.05,
-            letterSpacing: "-0.02em",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <span>STREET DANCE</span>
-          <span style={{ color: "#f97316" }}>BATTLES</span>
-        </div>
-        <div
-          style={{
-            marginTop: 40,
-            fontSize: 28,
-            color: "#8a8a92",
-            display: "flex",
-          }}
-        >
-          Korean street dance battle archive
-        </div>
+        KR
       </div>
-    ),
+      <div
+        style={{
+          fontSize: 96,
+          fontWeight: 900,
+          lineHeight: 1.05,
+          letterSpacing: "-0.02em",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <span>STREET DANCE</span>
+        <span style={{ color: "#f97316" }}>BATTLES</span>
+      </div>
+      <div
+        style={{
+          marginTop: 40,
+          fontSize: 28,
+          color: "#8a8a92",
+          display: "flex",
+        }}
+      >
+        Korean street dance battle archive
+      </div>
+    </div>,
     { ...size },
   );
 }

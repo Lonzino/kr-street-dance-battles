@@ -16,10 +16,18 @@
     "organizer": "스타도어 엔터테인먼트",
     "judges": ["DOKYUN", "MARIO", "WAACKXXXY", "BABYSLEEK", "REBEL"],
     "prize": [
-      { "rank": "우승", "amount": 1000000, "note": "상패 + 협찬 의류·가방 + 아시아권 메이저 배틀 진출 항공·숙박·참가비 지원" }
+      {
+        "rank": "우승",
+        "amount": 1000000,
+        "note": "상패 + 협찬 의류·가방 + 아시아권 메이저 배틀 진출 항공·숙박·참가비 지원"
+      }
     ],
     "links": [
-      { "label": "아주경제 기사", "url": "https://www.ajunews.com/view/20260209164400284", "type": "other" }
+      {
+        "label": "아주경제 기사",
+        "url": "https://www.ajunews.com/view/20260209164400284",
+        "type": "other"
+      }
     ],
     "tags": ["올스타일", "1on1", "서울", "레드불 코리아 협찬"]
   },
@@ -40,8 +48,16 @@
     },
     "organizer": "빛고을댄서스 (Bitgoeul Dancers)",
     "links": [
-      { "label": "공식 인스타그램", "url": "https://www.instagram.com/lineup_battle/", "type": "instagram" },
-      { "label": "과거 시즌 자료 (JK HIPHOP)", "url": "https://www.jkhiphop.com/39bd74b0-c1d9-4da1-ab24-11c51c9f389c", "type": "other" }
+      {
+        "label": "공식 인스타그램",
+        "url": "https://www.instagram.com/lineup_battle/",
+        "type": "instagram"
+      },
+      {
+        "label": "과거 시즌 자료 (JK HIPHOP)",
+        "url": "https://www.jkhiphop.com/39bd74b0-c1d9-4da1-ab24-11c51c9f389c",
+        "type": "other"
+      }
     ],
     "tags": ["멀티장르", "정례대회", "광주", "6일 시즌"]
   },
@@ -63,7 +79,11 @@
     "organizer": "한국댄스협회 (KDO)",
     "links": [
       { "label": "공식 사이트", "url": "https://www.kdofestival.com", "type": "official" },
-      { "label": "Korea Dance Organization Facebook", "url": "https://www.facebook.com/KoreaDanceOrganization/posts/1224441563048088/", "type": "other" }
+      {
+        "label": "Korea Dance Organization Facebook",
+        "url": "https://www.facebook.com/KoreaDanceOrganization/posts/1224441563048088/",
+        "type": "other"
+      }
     ],
     "tags": ["국제대회", "워크숍", "페스티벌"]
   },
@@ -84,8 +104,16 @@
     },
     "organizer": "대전시 + 대전교통공사 (주관: 뉴스핌)",
     "links": [
-      { "label": "대전 0시축제 나무위키", "url": "https://namu.wiki/w/%EB%8C%80%EC%A0%840%EC%8B%9C%EC%B6%95%EC%A0%9C", "type": "other" },
-      { "label": "2025 에디션 보도 (대전투데이)", "url": "http://www.daejeontoday.com/news/articleView.html?idxno=663256", "type": "other" }
+      {
+        "label": "대전 0시축제 나무위키",
+        "url": "https://namu.wiki/w/%EB%8C%80%EC%A0%840%EC%8B%9C%EC%B6%95%EC%A0%9C",
+        "type": "other"
+      },
+      {
+        "label": "2025 에디션 보도 (대전투데이)",
+        "url": "http://www.daejeontoday.com/news/articleView.html?idxno=663256",
+        "type": "other"
+      }
     ],
     "tags": ["도심축제", "지역대표", "대전"]
   },
@@ -104,7 +132,11 @@
     },
     "organizer": "강릉시 청소년수련관",
     "links": [
-      { "label": "모집 공고 (강원종합뉴스)", "url": "https://www.kwtotalnews.kr/58770", "type": "other" }
+      {
+        "label": "모집 공고 (강원종합뉴스)",
+        "url": "https://www.kwtotalnews.kr/58770",
+        "type": "other"
+      }
     ],
     "tags": ["청소년", "단오제", "강원"]
   },
@@ -126,7 +158,11 @@
     "organizer": "대한체육회",
     "links": [
       { "label": "전국체육대회 공식", "url": "https://national.sports.or.kr/", "type": "official" },
-      { "label": "개최 일정 기사 (세계일보)", "url": "https://www.segye.com/newsView/20250609506845", "type": "other" }
+      {
+        "label": "개최 일정 기사 (세계일보)",
+        "url": "https://www.segye.com/newsView/20250609506845",
+        "type": "other"
+      }
     ],
     "tags": ["전국체전", "국가대표급", "브레이킹 시범→정식"]
   },
@@ -145,7 +181,11 @@
     },
     "organizer": "서울 Kiki Ball 씬",
     "links": [
-      { "label": "한국 볼룸 씬 심층 기사 (JoySauce)", "url": "https://joysauce.com/queer-allies-are-vitalizing-south-koreas-ballroom-scene/", "type": "other" }
+      {
+        "label": "한국 볼룸 씬 심층 기사 (JoySauce)",
+        "url": "https://joysauce.com/queer-allies-are-vitalizing-south-koreas-ballroom-scene/",
+        "type": "other"
+      }
     ],
     "tags": ["보깅", "키키볼", "볼룸"]
   },
@@ -164,7 +204,11 @@
     },
     "organizer": "House of Promachos",
     "links": [
-      { "label": "House of Promachos 씬 참고 (Instagram)", "url": "https://www.instagram.com/p/DAQ4WYCyx1e/", "type": "instagram" }
+      {
+        "label": "House of Promachos 씬 참고 (Instagram)",
+        "url": "https://www.instagram.com/p/DAQ4WYCyx1e/",
+        "type": "instagram"
+      }
     ],
     "tags": ["보깅", "키키볼", "시상"]
   },
@@ -183,7 +227,11 @@
     },
     "organizer": "AIMHIGH",
     "links": [
-      { "label": "DanceCode 행사 등록", "url": "https://www.dancecode.kr/dance/", "type": "registration" }
+      {
+        "label": "DanceCode 행사 등록",
+        "url": "https://www.dancecode.kr/dance/",
+        "type": "registration"
+      }
     ],
     "tags": ["모집중", "댄스코드 등재", "세부 미확정"]
   },
@@ -202,7 +250,11 @@
     },
     "organizer": "CIDC",
     "links": [
-      { "label": "DanceCode 행사 등록", "url": "https://www.dancecode.kr/dance/", "type": "registration" }
+      {
+        "label": "DanceCode 행사 등록",
+        "url": "https://www.dancecode.kr/dance/",
+        "type": "registration"
+      }
     ],
     "tags": ["모집중", "지역대표 선발전", "세부 미확정"]
   },
@@ -221,7 +273,11 @@
     },
     "organizer": "제천시 (세부 주관 공고 확인)",
     "links": [
-      { "label": "DanceCode 행사 등록", "url": "https://www.dancecode.kr/dance/", "type": "registration" }
+      {
+        "label": "DanceCode 행사 등록",
+        "url": "https://www.dancecode.kr/dance/",
+        "type": "registration"
+      }
     ],
     "tags": ["모집중", "청소년", "퍼포먼스", "세부 미확정"]
   }

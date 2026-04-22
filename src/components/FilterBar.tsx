@@ -1,10 +1,6 @@
 import Link from "next/link";
 import { type BattleFilters, buildHref, hasAnyFilter } from "@/lib/filters";
-import {
-  genreLabel,
-  regionLabel,
-  statusLabel,
-} from "@/lib/labels";
+import { genreLabel, regionLabel, statusLabel } from "@/lib/labels";
 import type { BattleStatus, DanceGenre, Region } from "@/schema";
 
 const GENRE_OPTIONS: DanceGenre[] = [
@@ -43,11 +39,7 @@ export function FilterBar({ current }: { current: BattleFilters }) {
     <div className="space-y-3 rounded-xl border border-border bg-muted/20 p-4">
       <FilterRow label="상태">
         {STATUS_OPTIONS.map((s) => (
-          <Chip
-            key={s}
-            href={buildHref(current, { status: s })}
-            active={current.status === s}
-          >
+          <Chip key={s} href={buildHref(current, { status: s })} active={current.status === s}>
             {statusLabel[s]}
           </Chip>
         ))}
@@ -55,11 +47,7 @@ export function FilterBar({ current }: { current: BattleFilters }) {
 
       <FilterRow label="장르">
         {GENRE_OPTIONS.map((g) => (
-          <Chip
-            key={g}
-            href={buildHref(current, { genre: g })}
-            active={current.genre === g}
-          >
+          <Chip key={g} href={buildHref(current, { genre: g })} active={current.genre === g}>
             {genreLabel[g]}
           </Chip>
         ))}
@@ -67,11 +55,7 @@ export function FilterBar({ current }: { current: BattleFilters }) {
 
       <FilterRow label="지역">
         {REGION_OPTIONS.map((r) => (
-          <Chip
-            key={r}
-            href={buildHref(current, { region: r })}
-            active={current.region === r}
-          >
+          <Chip key={r} href={buildHref(current, { region: r })} active={current.region === r}>
             {regionLabel[r]}
           </Chip>
         ))}
@@ -79,10 +63,7 @@ export function FilterBar({ current }: { current: BattleFilters }) {
 
       {hasAnyFilter(current) && (
         <div className="border-t border-border pt-3">
-          <Link
-            href="/"
-            className="text-xs text-muted-foreground hover:text-foreground"
-          >
+          <Link href="/" className="text-xs text-muted-foreground hover:text-foreground">
             ← 모든 필터 해제
           </Link>
         </div>
@@ -91,13 +72,7 @@ export function FilterBar({ current }: { current: BattleFilters }) {
   );
 }
 
-function FilterRow({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function FilterRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-start gap-3">
       <span className="mt-1.5 w-10 shrink-0 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">

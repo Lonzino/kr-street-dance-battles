@@ -32,10 +32,7 @@ export function hasAnyFilter(f: BattleFilters): boolean {
   return Boolean(f.genre || f.region || f.status);
 }
 
-export function buildHref(
-  current: BattleFilters,
-  toggle: Partial<BattleFilters>,
-): string {
+export function buildHref(current: BattleFilters, toggle: Partial<BattleFilters>): string {
   const next: Record<string, string> = {};
   for (const [k, v] of Object.entries(current)) {
     if (v) next[k] = v;

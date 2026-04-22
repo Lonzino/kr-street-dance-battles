@@ -13,11 +13,11 @@
  * - 기존 row의 created_at은 보존, updated_at만 갱신
  */
 import "dotenv/config";
+import { sql } from "drizzle-orm";
 import battlesJson from "@/data/battles.json";
 import crewsJson from "@/data/crews.json";
 import { getDb, schema } from "@/db/client";
 import { BattleArray, CrewArray } from "@/schema";
-import { sql } from "drizzle-orm";
 
 async function main() {
   const battles = BattleArray.parse(battlesJson);

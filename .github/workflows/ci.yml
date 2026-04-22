@@ -19,6 +19,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Lint (Biome)
+        run: npm run lint
+
       - name: Validate JSON data against Zod schema
         run: npm run validate-data
 

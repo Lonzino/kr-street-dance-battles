@@ -1,6 +1,6 @@
-import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { COOKIE_NAME, checkPassword, createSessionToken, COOKIE_MAX_AGE_S } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { COOKIE_MAX_AGE_S, COOKIE_NAME, checkPassword, createSessionToken } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -45,9 +45,7 @@ export default async function LoginPage({
           placeholder="비밀번호"
           className="w-full rounded-lg border border-border bg-muted/30 px-4 py-3 text-sm focus:border-accent focus:outline-none"
         />
-        {sp.error && (
-          <p className="text-xs text-red-400">비밀번호가 틀렸습니다.</p>
-        )}
+        {sp.error && <p className="text-xs text-red-400">비밀번호가 틀렸습니다.</p>}
         <button
           type="submit"
           className="w-full rounded-lg bg-accent px-4 py-3 text-sm font-bold text-black transition-opacity hover:opacity-90"

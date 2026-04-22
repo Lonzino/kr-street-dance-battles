@@ -16,9 +16,17 @@ export default function AdminHome() {
           <p className="font-bold text-amber-300">DB가 아직 연결되지 않았습니다.</p>
           <ol className="mt-3 list-decimal space-y-1 pl-5 text-amber-200/90">
             <li>Supabase 프로젝트 생성 (region: Seoul 권장)</li>
-            <li><code className="rounded bg-black/30 px-1">.env.local</code>에 <code className="rounded bg-black/30 px-1">DATABASE_URL</code> 설정</li>
-            <li><code className="rounded bg-black/30 px-1">npm run db:push</code> 실행 (스키마 적용)</li>
-            <li><code className="rounded bg-black/30 px-1">npm run seed</code> 실행 (현재 JSON 데이터 마이그레이션)</li>
+            <li>
+              <code className="rounded bg-black/30 px-1">.env.local</code>에{" "}
+              <code className="rounded bg-black/30 px-1">DATABASE_URL</code> 설정
+            </li>
+            <li>
+              <code className="rounded bg-black/30 px-1">npm run db:push</code> 실행 (스키마 적용)
+            </li>
+            <li>
+              <code className="rounded bg-black/30 px-1">npm run seed</code> 실행 (현재 JSON 데이터
+              마이그레이션)
+            </li>
           </ol>
           <p className="mt-3 text-xs text-amber-200/70">
             자세한 설정은 <code className="rounded bg-black/30 px-1">docs/setup.md</code> 참고.
@@ -27,11 +35,7 @@ export default function AdminHome() {
       )}
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
-        <AdminCard
-          href="/admin/queue"
-          title="검토 큐"
-          desc="LLM이 파싱한 배틀 정보 검토·승인"
-        />
+        <AdminCard href="/admin/queue" title="검토 큐" desc="LLM이 파싱한 배틀 정보 검토·승인" />
         <AdminCard
           href="/admin/battles"
           title="공개된 배틀"
@@ -55,15 +59,7 @@ npm run ingest:url -- "5월 4일 부천 힙합 페스티벌..."
   );
 }
 
-function AdminCard({
-  href,
-  title,
-  desc,
-}: {
-  href: string;
-  title: string;
-  desc: string;
-}) {
+function AdminCard({ href, title, desc }: { href: string; title: string; desc: string }) {
   return (
     <Link
       href={href}

@@ -35,7 +35,7 @@ export const instagramAdapter: SourceAdapter = {
 };
 
 function extractIgPostId(url: string): string | null {
-  const m = url.match(/instagram\.com\/(p|reel|tv)\/([^\/?#]+)/);
+  const m = url.match(/instagram\.com\/(p|reel|tv)\/([^/?#]+)/);
   return m ? m[2] : null;
 }
 
