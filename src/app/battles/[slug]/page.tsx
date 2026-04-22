@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getAllBattleSlugs, getBattleBySlug } from "@/lib/data";
+import { findCrewSlugByName, getAllBattleSlugs, getBattleBySlug } from "@/lib/data";
 import {
   formatDateKR,
   formatKRW,
@@ -121,12 +121,25 @@ export default async function BattleDetailPage({
           {battle.results && battle.results.length > 0 && (
             <Section title="결과">
               <ul className="space-y-1.5">
-                {battle.results.map((r) => (
-                  <li key={r.rank} className="flex items-baseline gap-3 text-sm">
-                    <span className="w-8 font-display text-accent">{r.rank}위</span>
-                    <span className="font-medium">{r.crew ?? r.dancer}</span>
-                  </li>
-                ))}
+                {battle.results.map((r) => {
+                  const name = r.crew ?? r.dancer ?? "";
+                  const crewSlug = r.crew ? findCrewSlugByName(r.crew) : undefined;
+                  return (
+                    <li key={r.rank} className="flex items-baseline gap-3 text-sm">
+                      <span className="w-8 font-display text-accent">{r.rank}위</span>
+                      {crewSlug ? (
+                        <Link
+                          href={`/crews/${crewSlug}`}
+                          className="font-medium hover:text-accent"
+                        >
+                          {name}
+                        </Link>
+                      ) : (
+                        <span className="font-medium">{name}</span>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </Section>
           )}

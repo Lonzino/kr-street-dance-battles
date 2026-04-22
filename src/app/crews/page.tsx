@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllCrews } from "@/lib/data";
 import { genreLabel, regionLabel } from "@/lib/labels";
@@ -21,12 +22,15 @@ export default function CrewsPage() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {crews.map((crew) => (
-          <div
+          <Link
             key={crew.slug}
-            className="rounded-xl border border-border bg-muted/30 p-5"
+            href={`/crews/${crew.slug}`}
+            className="group flex flex-col rounded-xl border border-border bg-muted/30 p-5 transition-all hover:border-accent/50 hover:bg-muted/60"
           >
             <div className="flex items-baseline justify-between gap-2">
-              <h2 className="text-lg font-bold">{crew.name}</h2>
+              <h2 className="text-lg font-bold group-hover:text-accent">
+                {crew.name}
+              </h2>
               {crew.foundedYear && (
                 <span className="text-xs text-muted-foreground">{crew.foundedYear}</span>
               )}
@@ -48,21 +52,11 @@ export default function CrewsPage() {
               ))}
             </div>
             {crew.description && (
-              <p className="mt-3 text-sm leading-relaxed text-foreground/80">
+              <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-foreground/80">
                 {crew.description}
               </p>
             )}
-            {crew.instagramUrl && (
-              <a
-                href={crew.instagramUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-4 inline-block text-xs text-accent hover:underline"
-              >
-                인스타그램 ↗
-              </a>
-            )}
-          </div>
+          </Link>
         ))}
       </div>
 

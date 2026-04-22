@@ -33,6 +33,42 @@ export function getCrewBySlug(slug: string): Crew | undefined {
   return crews.find((c) => c.slug === slug);
 }
 
+export function getAllCrewSlugs(): string[] {
+  return crews.map((c) => c.slug);
+}
+
+/**
+ * 결과(results)에 이 크루가 등장하는 배틀들 반환.
+ * 매칭은 크루 이름 또는 한글 이름 모두 시도.
+ */
+export function getBattlesByCrew(crew: Crew): { battle: Battle; rank: number }[] {
+  const candidates = [crew.name, crew.koreanName].filter(Boolean) as string[];
+  const matches: { battle: Battle; rank: number }[] = [];
+
+  for (const b of battles) {
+    if (!b.results) continue;
+    for (const r of b.results) {
+      if (!r.crew) continue;
+      if (candidates.some((c) => r.crew?.toLowerCase() === c.toLowerCase())) {
+        matches.push({ battle: b, rank: r.rank });
+      }
+    }
+  }
+  return matches.sort((a, b) => b.battle.date.localeCompare(a.battle.date));
+}
+
+/**
+ * 배틀 결과 텍스트의 크루 이름이 등록된 크루와 매칭되면 slug 반환.
+ */
+export function findCrewSlugByName(name: string): string | undefined {
+  const lower = name.toLowerCase();
+  return crews.find(
+    (c) =>
+      c.name.toLowerCase() === lower ||
+      c.koreanName?.toLowerCase() === lower,
+  )?.slug;
+}
+
 export function filterBattles(opts: {
   status?: BattleStatus;
   genre?: DanceGenre;
