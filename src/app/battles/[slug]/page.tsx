@@ -39,8 +39,44 @@ export default async function BattleDetailPage({
   const battle = getBattleBySlug(slug);
   if (!battle) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "DanceEvent",
+    name: battle.title,
+    description: battle.description ?? battle.subtitle ?? battle.title,
+    startDate: battle.date,
+    endDate: battle.endDate ?? battle.date,
+    eventStatus:
+      battle.status === "cancelled"
+        ? "https://schema.org/EventCancelled"
+        : "https://schema.org/EventScheduled",
+    eventAttendanceMode:
+      battle.venue.region === "online"
+        ? "https://schema.org/OnlineEventAttendanceMode"
+        : "https://schema.org/OfflineEventAttendanceMode",
+    location: {
+      "@type": "Place",
+      name: battle.venue.name,
+      address: battle.venue.address,
+    },
+    organizer: { "@type": "Organization", name: battle.organizer },
+    offers: battle.entryFee
+      ? {
+          "@type": "Offer",
+          price: battle.entryFee,
+          priceCurrency: "KRW",
+          availability: "https://schema.org/InStock",
+        }
+      : undefined,
+  };
+
   return (
     <article className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Link
         href="/"
         className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
