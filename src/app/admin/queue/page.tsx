@@ -1,5 +1,6 @@
 import { desc, eq } from "drizzle-orm";
 import { getDb, isDbConfigured, schema } from "@/db/client";
+import { ReviewActions } from "./review-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -43,7 +44,11 @@ export default async function ReviewQueue() {
                   <span className="rounded bg-foreground/10 px-2 py-0.5">
                     {r.sourceType}
                   </span>
-                  <span className="text-muted-foreground">
+                  <span
+                    className={`text-muted-foreground ${
+                      (r.parseConfidence ?? 0) < 0.6 ? "text-amber-300" : ""
+                    }`}
+                  >
                     confidence: {r.parseConfidence?.toFixed(2) ?? "—"}
                   </span>
                 </div>
@@ -65,9 +70,10 @@ export default async function ReviewQueue() {
                 </ul>
               )}
 
-              <pre className="mt-3 overflow-x-auto rounded bg-black/30 p-3 text-xs">
-                {JSON.stringify(r.parsedPayload, null, 2)}
-              </pre>
+              <ReviewActions
+                recordId={r.id}
+                initialPayload={JSON.stringify(r.parsedPayload, null, 2)}
+              />
 
               <details className="mt-3">
                 <summary className="cursor-pointer text-xs text-muted-foreground">
@@ -77,12 +83,6 @@ export default async function ReviewQueue() {
                   {r.rawContent}
                 </p>
               </details>
-
-              <div className="mt-4 flex gap-2 text-xs">
-                <span className="text-muted-foreground">
-                  TODO: 승인/거부/편집 버튼 — server action 또는 admin UI 빌드
-                </span>
-              </div>
             </article>
           ))}
         </div>
