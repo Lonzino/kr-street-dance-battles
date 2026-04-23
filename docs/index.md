@@ -3,6 +3,7 @@
 - **🌟 [CHECKPOINT.md](./CHECKPOINT.md)** — 시작점. 통합 가이드 (개발 + 운영 한 번에)
 - **🚀 [GROWTH-STRATEGY.md](./GROWTH-STRATEGY.md)** — 성장 전략 (atomic network 우선, 1차·학술 출처 기반)
 - **🎯 [PLAYBOOK-ATOMIC-NETWORK.md](./PLAYBOOK-ATOMIC-NETWORK.md)** — 14일 실행 플랜 (광주 LINE UP 컨택·미팅·검증)
+- **⚔️ [COMPETITIVE-ANALYSIS.md](./COMPETITIVE-ANALYSIS.md)** — 경쟁 분석 (DanceCode·콘테스트코리아·해외 플랫폼·포지셔닝)
 - **[OPERATIONS.md](./OPERATIONS.md)** — 운영 매뉴얼 (일상 작업, 장애 대응, 보안 사고)
 - **[SECRETS.md](./SECRETS.md)** — 시크릿 관리 + 회전 절차
 - [ACTIVATION.md](./ACTIVATION.md) — P0~P3 기능 활성화 가이드 (외부 서비스 셋업)
