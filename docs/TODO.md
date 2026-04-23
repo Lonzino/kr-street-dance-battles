@@ -4,6 +4,8 @@
 
 상태 표기: ⏳ 대기 · 🔄 진행중 · ✅ 완료 · ❌ 보류
 
+> **📋 코드 리뷰 수정 항목**: [REVIEW-FIXES.md](./REVIEW-FIXES.md) — 외부 리뷰로 발견된 Critical 5건·High 9건·Medium 7건·Low 6건. 배포 전 Critical+High 전부 해결 목표.
+
 ---
 
 ## 🔥 Critical — 배포 전 반드시

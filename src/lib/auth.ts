@@ -19,20 +19,17 @@ function getJwtSecret(): Uint8Array {
 }
 
 export async function checkPassword(input: string): Promise<boolean> {
-  const expected = process.env.ADMIN_PASSWORD;
-  if (!expected) return false;
-
-  // 타이밍 공격 방어: 길이 다르면 가짜 비교
+  const expected = process.env.ADMIN_PASSWORD ?? "";
+  // 타이밍 공격 방어: 길이 차이도 일정 시간 안에 흡수.
+  // 길이 미스매치 시 즉시 return하지 않고 항상 max 길이만큼 XOR.
   const a = new TextEncoder().encode(input);
   const b = new TextEncoder().encode(expected);
-  if (a.length !== b.length) {
-    let _ = 0;
-    for (let i = 0; i < Math.max(a.length, b.length); i++) _ |= 1;
-    return false;
+  const len = Math.max(a.length, b.length, 1);
+  let diff = a.length ^ b.length;
+  for (let i = 0; i < len; i++) {
+    diff |= (a[i] ?? 0) ^ (b[i] ?? 0);
   }
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
-  return diff === 0;
+  return expected.length > 0 && diff === 0;
 }
 
 export async function createSessionToken(): Promise<string> {
