@@ -32,12 +32,20 @@ export default async function CrewDetailPage({ params }: { params: Promise<{ slu
 
   return (
     <article className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14">
-      <Link
-        href="/crews"
-        className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
-      >
-        ← 모든 크루
-      </Link>
+      <div className="mb-6 flex items-center justify-between gap-3">
+        <Link
+          href="/crews"
+          className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+        >
+          ← 모든 크루
+        </Link>
+        <Link
+          href={`/crews/${slug}/claim`}
+          className="rounded-md border border-border px-3 py-1.5 text-xs text-muted-foreground hover:border-accent hover:text-foreground"
+        >
+          이 크루 클레임
+        </Link>
+      </div>
 
       <header className="mb-8 border-b border-border pb-8">
         <div className="flex flex-wrap items-baseline gap-3">
