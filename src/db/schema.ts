@@ -332,3 +332,49 @@ export const notificationPrefs = pgTable("notification_prefs", {
     .defaultNow()
     .$onUpdateFn(() => new Date()),
 });
+
+// ────────────────────────────────────────────────
+// organizer_claims — 주최자가 특정 배틀의 편집권 보유
+// ────────────────────────────────────────────────
+
+export const organizerClaims = pgTable(
+  "organizer_claims",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    battleId: uuid("battle_id")
+      .notNull()
+      .references(() => battles.id, { onDelete: "cascade" }),
+    /** 운영자가 검증 완료한 시점 (pending이면 null) */
+    verifiedAt: timestamp("verified_at", { withTimezone: true }),
+    /** 검증한 운영자 식별자 (admin user id 또는 admin@system) */
+    verifiedBy: text("verified_by"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.battleId] }),
+    index("organizer_claims_battle_idx").on(t.battleId),
+    index("organizer_claims_user_idx").on(t.userId),
+  ],
+);
+
+// ────────────────────────────────────────────────
+// edit_log — 배틀 수정 이력 (스팸·분쟁 추적)
+// ────────────────────────────────────────────────
+
+export const editLog = pgTable(
+  "edit_log",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    battleId: uuid("battle_id")
+      .notNull()
+      .references(() => battles.id, { onDelete: "cascade" }),
+    userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }),
+    /** 변경된 필드 → 이전 값 / 새 값 */
+    changes: jsonb("changes").notNull().$type<Record<string, { from: unknown; to: unknown }>>(),
+    note: text("note"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("edit_log_battle_idx").on(t.battleId)],
+);

@@ -54,6 +54,7 @@ function SiteHeader() {
         <nav className="flex items-center gap-1 text-sm">
           <NavLink href="/">배틀</NavLink>
           <NavLink href="/crews">크루</NavLink>
+          <NavLink href="/submit/battle">제보</NavLink>
           <NavLink href="/about">소개</NavLink>
           <Suspense fallback={null}>
             <UserMenu />
