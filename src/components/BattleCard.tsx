@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BookmarkButton } from "@/components/BookmarkButton";
 import {
   formatDateKR,
   formatKRW,
@@ -10,15 +11,28 @@ import {
 } from "@/lib/labels";
 import type { Battle } from "@/schema";
 
-export function BattleCard({ battle }: { battle: Battle }) {
+export function BattleCard({
+  battle,
+  bookmarked = false,
+  showBookmark = false,
+}: {
+  battle: Battle;
+  bookmarked?: boolean;
+  showBookmark?: boolean;
+}) {
   const topPrize = battle.prize?.[0];
 
   return (
     <Link
       href={`/battles/${battle.slug}`}
-      className="group flex flex-col gap-3 rounded-xl border border-border bg-muted/30 p-5 transition-all hover:border-accent/50 hover:bg-muted/60"
+      className="group relative flex flex-col gap-3 rounded-xl border border-border bg-muted/30 p-5 transition-all hover:border-accent/50 hover:bg-muted/60"
     >
-      <div className="flex items-start justify-between gap-3">
+      {showBookmark && (
+        <div className="absolute right-3 top-3 z-10">
+          <BookmarkButton battleSlug={battle.slug} initialBookmarked={bookmarked} variant="icon" />
+        </div>
+      )}
+      <div className="flex items-start justify-between gap-3 pr-10">
         <div className="flex flex-wrap items-center gap-2">
           <span
             className={`rounded-full border px-2 py-0.5 text-xs font-medium ${statusColor[battle.status]}`}

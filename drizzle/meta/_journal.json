@@ -15,6 +15,13 @@
       "when": 1776910678223,
       "tag": "0001_add_users",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1776911647198,
+      "tag": "0002_add_bookmarks_prefs",
+      "breakpoints": true
     }
   ]
 }

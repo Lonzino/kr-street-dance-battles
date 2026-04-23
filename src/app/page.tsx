@@ -1,7 +1,9 @@
 import { BattleCard } from "@/components/BattleCard";
 import { FilterBar } from "@/components/FilterBar";
+import { getBookmarkedSlugs } from "@/lib/bookmarks";
 import { getAllBattles } from "@/lib/data";
 import { applyFilters, hasAnyFilter, parseFilters } from "@/lib/filters";
+import { getCurrentAuthUser } from "@/lib/supabase/server";
 import type { Battle, BattleStatus } from "@/schema";
 
 const GROUPS: { status: BattleStatus | "active"; title: string; desc?: string }[] = [
@@ -22,6 +24,11 @@ export default async function HomePage({
   const all = await getAllBattles();
   const filtered = applyFilters(all, filters);
   const now = new Date();
+
+  // 로그인된 사용자면 북마크 슬러그 일괄 조회
+  const authUser = await getCurrentAuthUser();
+  const bookmarked = authUser ? await getBookmarkedSlugs(authUser.id) : new Set<string>();
+  const showBookmark = Boolean(authUser);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
@@ -53,15 +60,30 @@ export default async function HomePage({
       </section>
 
       {filtersActive ? (
-        <FilteredList battles={filtered} totalCount={all.length} />
+        <FilteredList
+          battles={filtered}
+          totalCount={all.length}
+          bookmarked={bookmarked}
+          showBookmark={showBookmark}
+        />
       ) : (
-        <GroupedList battles={all} now={now} />
+        <GroupedList battles={all} now={now} bookmarked={bookmarked} showBookmark={showBookmark} />
       )}
     </div>
   );
 }
 
-function FilteredList({ battles, totalCount }: { battles: Battle[]; totalCount: number }) {
+function FilteredList({
+  battles,
+  totalCount,
+  bookmarked,
+  showBookmark,
+}: {
+  battles: Battle[];
+  totalCount: number;
+  bookmarked: Set<string>;
+  showBookmark: boolean;
+}) {
   return (
     <section>
       <header className="mb-4 flex items-end justify-between">
@@ -77,7 +99,12 @@ function FilteredList({ battles, totalCount }: { battles: Battle[]; totalCount: 
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {battles.map((b) => (
-            <BattleCard key={b.slug} battle={b} />
+            <BattleCard
+              key={b.slug}
+              battle={b}
+              bookmarked={bookmarked.has(b.slug)}
+              showBookmark={showBookmark}
+            />
           ))}
         </div>
       )}
@@ -85,7 +112,17 @@ function FilteredList({ battles, totalCount }: { battles: Battle[]; totalCount: 
   );
 }
 
-function GroupedList({ battles, now }: { battles: Battle[]; now: Date }) {
+function GroupedList({
+  battles,
+  now,
+  bookmarked,
+  showBookmark,
+}: {
+  battles: Battle[];
+  now: Date;
+  bookmarked: Set<string>;
+  showBookmark: boolean;
+}) {
   const active = battles.filter((b) => b.status === "registration" || b.status === "ongoing");
   const upcoming = battles
     .filter((b) => b.status === "upcoming" && new Date(b.date) >= now)
@@ -113,7 +150,12 @@ function GroupedList({ battles, now }: { battles: Battle[]; now: Date }) {
             </header>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {items.map((b) => (
-                <BattleCard key={b.slug} battle={b} />
+                <BattleCard
+                  key={b.slug}
+                  battle={b}
+                  bookmarked={bookmarked.has(b.slug)}
+                  showBookmark={showBookmark}
+                />
               ))}
             </div>
           </section>

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
+import { SITE_URL } from "@/lib/constants";
 import { getCurrentAuthUser, isSupabaseConfigured } from "@/lib/supabase/server";
 import { ensureUserRow, getUserProfile } from "@/lib/users";
 import { ProfileForm } from "./profile-form";
@@ -33,7 +35,45 @@ export default async function ProfilePage() {
         <p className="mt-2 text-sm text-muted-foreground">{authUser.email}</p>
       </header>
 
+      <nav className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <ProfileLink href="/profile/bookmarks" label="북마크" />
+        <ProfileLink href="/profile/notifications" label="알림 설정" />
+        <ProfileLink href={`${SITE_URL}/calendar.ics`} label="캘린더 구독" external />
+        <ProfileLink href="/profile" label="프로필 편집" active />
+      </nav>
+
       <ProfileForm initial={profile} />
     </div>
+  );
+}
+
+function ProfileLink({
+  href,
+  label,
+  active,
+  external,
+}: {
+  href: string;
+  label: string;
+  active?: boolean;
+  external?: boolean;
+}) {
+  const className = `rounded-lg border px-3 py-2 text-center text-xs transition-colors ${
+    active
+      ? "border-accent bg-accent/10 text-accent"
+      : "border-border text-muted-foreground hover:border-accent/50 hover:text-foreground"
+  }`;
+
+  if (external) {
+    return (
+      <a href={href} className={className} title="구독 후 캘린더에 자동 동기화">
+        {label} ↗
+      </a>
+    );
+  }
+  return (
+    <Link href={href} className={className}>
+      {label}
+    </Link>
   );
 }

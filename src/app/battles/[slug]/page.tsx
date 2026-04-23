@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BookmarkButton } from "@/components/BookmarkButton";
+import { getBookmarkedSlugs } from "@/lib/bookmarks";
 import { findCrewSlugByName, getAllBattleSlugs, getBattleBySlug } from "@/lib/data";
 import {
   formatDateKR,
@@ -12,6 +14,7 @@ import {
   statusColor,
   statusLabel,
 } from "@/lib/labels";
+import { getCurrentAuthUser } from "@/lib/supabase/server";
 
 export async function generateStaticParams() {
   const slugs = await getAllBattleSlugs();
@@ -36,6 +39,11 @@ export default async function BattleDetailPage({ params }: { params: Promise<{ s
   const { slug } = await params;
   const battle = await getBattleBySlug(slug);
   if (!battle) notFound();
+
+  // 로그인된 사용자면 이 배틀이 북마크됐는지 확인
+  const authUser = await getCurrentAuthUser();
+  const bookmarkedSet = authUser ? await getBookmarkedSlugs(authUser.id) : new Set<string>();
+  const isBookmarked = bookmarkedSet.has(battle.slug);
 
   // results의 크루 이름 → slug 미리 일괄 조회 (렌더 중 async 회피)
   const crewSlugMap: Record<string, string | undefined> = {};
@@ -117,7 +125,16 @@ export default async function BattleDetailPage({ params }: { params: Promise<{ s
             {formatDateKR(battle.date, battle.endDate)}
           </span>
         </div>
-        <h1 className="mt-3 text-3xl font-bold sm:text-4xl">{battle.title}</h1>
+        <div className="mt-3 flex flex-wrap items-start justify-between gap-3">
+          <h1 className="text-3xl font-bold sm:text-4xl">{battle.title}</h1>
+          {authUser && (
+            <BookmarkButton
+              battleSlug={battle.slug}
+              initialBookmarked={isBookmarked}
+              variant="full"
+            />
+          )}
+        </div>
         {battle.subtitle && (
           <p className="mt-2 text-base text-muted-foreground">{battle.subtitle}</p>
         )}

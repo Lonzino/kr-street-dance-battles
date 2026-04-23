@@ -5,6 +5,7 @@ import {
   jsonb,
   pgEnum,
   pgTable,
+  primaryKey,
   real,
   text,
   timestamp,
@@ -271,3 +272,63 @@ export const battles = pgTable(
     index("battles_published_idx").on(t.isPublished),
   ],
 );
+
+// ────────────────────────────────────────────────
+// notification_channel enum
+// ────────────────────────────────────────────────
+
+export const notificationChannelEnum = pgEnum("notification_channel", [
+  "email",
+  "web_push",
+  "discord",
+]);
+
+// ────────────────────────────────────────────────
+// bookmarks — 사용자가 관심 표시한 배틀
+// ────────────────────────────────────────────────
+
+export const bookmarks = pgTable(
+  "bookmarks",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    battleId: uuid("battle_id")
+      .notNull()
+      .references(() => battles.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.battleId] }),
+    index("bookmarks_user_idx").on(t.userId),
+    index("bookmarks_battle_idx").on(t.battleId),
+  ],
+);
+
+// ────────────────────────────────────────────────
+// notification_prefs — 사용자별 알림 설정
+// ────────────────────────────────────────────────
+
+export const notificationPrefs = pgTable("notification_prefs", {
+  userId: uuid("user_id")
+    .primaryKey()
+    .references(() => users.id, { onDelete: "cascade" }),
+  channels: notificationChannelEnum("channels").array().notNull().default(["email"]),
+  /** null = 모든 지역 */
+  regions: regionEnum("regions").array(),
+  /** null = 모든 장르 */
+  genres: danceGenreEnum("genres").array(),
+  /** 며칠 전 사전 알림 */
+  leadDays: integer("lead_days").notNull().default(3),
+  /** 주간 다이제스트 메일 */
+  weeklyDigest: boolean("weekly_digest").notNull().default(true),
+  /** 북마크한 배틀 변경 알림 */
+  bookmarkAlerts: boolean("bookmark_alerts").notNull().default(true),
+  /** 마지막 일일 알림 발송 시각 — 중복 발송 방지 */
+  lastDailySentAt: timestamp("last_daily_sent_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow()
+    .$onUpdateFn(() => new Date()),
+});
