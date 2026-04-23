@@ -29,7 +29,7 @@ export default async function LoginPage({
   }
 
   const authUser = await getCurrentAuthUser();
-  if (authUser) redirect(sp.next && sp.next.startsWith("/") ? sp.next : "/profile");
+  if (authUser) redirect(sp.next?.startsWith("/") ? sp.next : "/profile");
 
   return (
     <div className="mx-auto flex min-h-[60vh] max-w-sm flex-col justify-center px-4 py-10">

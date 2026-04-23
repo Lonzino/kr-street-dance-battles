@@ -1,6 +1,6 @@
 "use server";
 
-import { and, asc, eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { getDb, isDbConfigured, schema } from "@/db/client";
 import { canEditBattle, loadAuthzContext } from "@/lib/authz";

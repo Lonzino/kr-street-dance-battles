@@ -1,6 +1,5 @@
 "use server";
 
-import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { getDb, isDbConfigured, schema } from "@/db/client";
 import { getCurrentAuthUser } from "@/lib/supabase/server";

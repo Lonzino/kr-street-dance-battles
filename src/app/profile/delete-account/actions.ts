@@ -13,7 +13,7 @@ import { deleteUserAccount } from "@/lib/users";
  */
 export async function deleteAccount(
   formData: FormData,
-): Promise<{ ok: false; error: string } | void> {
+): Promise<{ ok: false; error: string } | undefined> {
   const authUser = await getCurrentAuthUser();
   if (!authUser) redirect("/login");
 
