@@ -17,10 +17,22 @@
 /src/ingestion/             @Lonzino
 /drizzle/                   @Lonzino
 
-# 인증·보안
+# 인증·보안 (민감 — 권한·세션·탈퇴·시크릿 다루는 경로 전부)
 /src/lib/auth.ts            @Lonzino
+/src/lib/authz.ts           @Lonzino
+/src/lib/users.ts           @Lonzino
+/src/lib/supabase/          @Lonzino
 /src/app/admin/             @Lonzino
 /src/app/api/               @Lonzino
+/src/app/auth/              @Lonzino
+/src/app/login/             @Lonzino
+/src/app/profile/           @Lonzino
+
+# 셀프 등록·주최자 루프 (스팸·권한 오용 리스크)
+/src/app/submit/            @Lonzino
+
+# 이메일·알림 인프라 (대량 전송 사고 위험)
+/src/lib/email/             @Lonzino
 
 # 인프라·CI·워크플로우
 /.github/                   @Lonzino
