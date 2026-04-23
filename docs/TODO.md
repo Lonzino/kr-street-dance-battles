@@ -1,15 +1,16 @@
 # TODO
 
-남은 작업 우선순위 정리. 마지막 갱신: **2026-04-23 (Phase 0~3 + 보안 보강 + 운영 매뉴얼 완료)**.
+남은 작업 우선순위 정리. 마지막 갱신: **2026-04-23 (Phase A — 참가 신청·댄서 디렉토리·체크인 완료)**.
 
 상태 표기: ⏳ 대기 · 🔄 진행중 · ✅ 완료 · ❌ 보류
 
+> **🎯 현재 체크포인트**: [CHECKPOINT.md](./CHECKPOINT.md) — Phase A 시점 개발자·운영자 단일 진실
 > **📋 코드 리뷰**: [REVIEW-FIXES.md](./REVIEW-FIXES.md) (초기 스냅샷) → [SECURITY-REVIEW.md](./SECURITY-REVIEW.md) (인증 감사, 최신)
 > **📖 운영 매뉴얼**: [OPERATIONS.md](./OPERATIONS.md) · [SECRETS.md](./SECRETS.md) · [ACTIVATION.md](./ACTIVATION.md)
 
 ---
 
-## ✅ 아카이브 — 배포 차단 해소 (2026-04-23 완료)
+## ✅ 아카이브 — 배포 차단 해소 + Phase A 완료 (2026-04-23)
 
 ```
 38f0357  feat(auth):   Phase 0 — Supabase Auth (Kakao + Google)
@@ -18,6 +19,8 @@ e66c1d3  feat(p2):     셀프 등록·편집·포스터 업로드
 e7428f1  feat(p3):     랭킹·후원·크루 클레임
 0283d03  feat(보안):   rate limit + 약관/개인정보 + 회원 탈퇴
 cf790be  docs:         운영 매뉴얼 + 시크릿 관리
+dfaa56b  feat(pa):     참가 신청·주최자 명단·댄서 프로필·현장 체크인
+fb31e2a  docs:         CHECKPOINT.md 통합 가이드
 ```
 
 ### Critical (C1~C7) — 전부 ✅
@@ -83,10 +86,21 @@ cf790be  docs:         운영 매뉴얼 + 시크릿 관리
 - [ ] 수정 후 재파싱 (LLM 재실행)
 
 ### 데이터 모델
-- [ ] `dancers` 테이블 (심사위원/우승자 프로필)
-- [x] crew ↔ battle FK (join 테이블 `battle_results`) — **일부 해결**, alias 매칭으로 보강 `bbabd58`
+- [x] `dancers` 디렉토리 (닉네임 기반 프로필) ✅ `dfaa56b`
+- [x] `battle_categories` 테이블 (한 배틀 다부문) ✅ `dfaa56b`
+- [x] `registrations` 테이블 (신청·결제·체크인 상태) ✅ `dfaa56b`
+- [x] crew ↔ battle FK (join 테이블) — **일부**, alias 매칭 `bbabd58`
+- [ ] `dancers` **정규화** — 배틀 결과의 freestyle 텍스트 → FK
+- [ ] 심사위원 프로필 연결 (현재 문자열 배열)
 - [ ] 태그 정규화 (enum/다대다)
 - [ ] 이벤트 시리즈 (같은 대회 여러 시즌 묶기)
+
+### Phase A 참가 신청 플로우
+- [x] 부문별 신청 (정원·대기자·중복 차단) ✅ `dfaa56b`
+- [x] HMAC 체크인 토큰 + QR URL ✅ `dfaa56b`
+- [ ] QR 스캐너 페이지 (모바일 카메라)
+- [ ] 결제 연동 (현재는 외부 안내만)
+- [ ] 대기자 자동 승격 (cancellation → next in queue)
 
 ---
 
@@ -184,4 +198,5 @@ cf790be  docs:         운영 매뉴얼 + 시크릿 관리
 - **2026-04-23**: Phase 0~3 (Supabase Auth·댄서 루프·주최자 루프·랭킹/후원/클레임)
 - **2026-04-23**: 배포 차단 보안 해소 (rate limit / 약관 / 회원 탈퇴)
 - **2026-04-23**: 기여 인프라 Tier 1~4 (Issue/PR 템플릿·Husky·release-please·Issue→ingest)
-- **2026-04-23**: 운영 매뉴얼 + 시크릿 관리 + **이 TODO drift 해소**
+- **2026-04-23**: 운영 매뉴얼 + 시크릿 관리 + 이 TODO drift 해소
+- **2026-04-23**: Phase A (참가 신청·주최자 명단·댄서 프로필·현장 체크인) + CHECKPOINT.md + **이 TODO Phase A drift 해소**

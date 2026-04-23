@@ -34,6 +34,15 @@
 # 이메일·알림 인프라 (대량 전송 사고 위험)
 /src/lib/email/             @Lonzino
 
+# 댄서 디렉토리 (개인정보 — 닉네임·인스타·참가 기록)
+/src/app/dancers/           @Lonzino
+/src/lib/dancers.ts         @Lonzino
+
+# 참가 신청·결제·체크인 (Phase A — 금전·정원·현장 입장 직결)
+/src/lib/registrations.ts   @Lonzino
+/src/lib/categories.ts      @Lonzino
+/src/lib/check-in.ts        @Lonzino
+
 # 인프라·CI·워크플로우
 /.github/                   @Lonzino
 /vercel.json                @Lonzino
