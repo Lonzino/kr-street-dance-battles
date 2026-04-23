@@ -1,0 +1,100 @@
+name: Issue → Ingest Bridge
+
+# 배틀 제보·크루 추가 Issue가 열리면 /api/ingest로 전송 → admin 검토 큐 진입
+
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  forward-to-ingest:
+    # 제보 레이블이 붙은 경우만
+    if: |
+      contains(github.event.issue.labels.*.name, 'battle-report') ||
+      contains(github.event.issue.labels.*.name, 'crew-add')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build ingest payload
+        id: payload
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          AUTHOR: ${{ github.event.issue.user.login }}
+        run: |
+          # Issue 본문을 ingest 입력으로 래핑
+          # /api/ingest 는 X-Ingest-Token + { input: string } 기대
+          INPUT="GitHub Issue #${ISSUE_NUMBER} — ${ISSUE_TITLE}
+
+          제보자: ${AUTHOR}
+          원본: ${ISSUE_URL}
+
+          ---
+
+          ${ISSUE_BODY}"
+
+          # JSON 문자열 이스케이프
+          PAYLOAD=$(jq -cn --arg input "$INPUT" --arg source "github-issue" --arg sourceId "issue-${ISSUE_NUMBER}" '{input: $input, sourceType: $source, sourceId: $sourceId}')
+          echo "payload=$PAYLOAD" >> $GITHUB_OUTPUT
+
+      - name: POST to /api/ingest
+        id: ingest
+        env:
+          INGEST_URL: ${{ secrets.INGEST_URL }}
+          INGEST_TOKEN: ${{ secrets.INGEST_TOKEN }}
+        run: |
+          if [ -z "$INGEST_URL" ] || [ -z "$INGEST_TOKEN" ]; then
+            echo "::warning::INGEST_URL 또는 INGEST_TOKEN 시크릿 미설정 — 브릿지 스킵"
+            echo "status=skipped" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          RESP=$(curl -sS -w "\n%{http_code}" -X POST "$INGEST_URL" \
+            -H "Content-Type: application/json" \
+            -H "X-Ingest-Token: $INGEST_TOKEN" \
+            --data '${{ steps.payload.outputs.payload }}' || echo -e "curl_failed\n000")
+          HTTP_CODE=$(echo "$RESP" | tail -n1)
+          BODY=$(echo "$RESP" | sed '$d')
+          echo "http_code=$HTTP_CODE" >> $GITHUB_OUTPUT
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          if [ "$HTTP_CODE" != "200" ] && [ "$HTTP_CODE" != "201" ]; then
+            echo "::warning::ingest 호출 실패 ($HTTP_CODE)"
+            echo "status=failed" >> $GITHUB_OUTPUT
+          else
+            echo "status=queued" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Comment on issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const status = '${{ steps.ingest.outputs.status }}';
+            const code = '${{ steps.ingest.outputs.http_code }}';
+            let body;
+            if (status === 'skipped') {
+              body = '⚠️ 자동 브릿지 비활성 상태입니다 (운영자 시크릿 미설정). 운영자가 이슈 내용을 보고 수동으로 처리할 예정입니다.';
+            } else if (status === 'queued') {
+              body = '🤖 제보 감사합니다! 검토 큐에 자동 등록되었습니다.\n\n운영자 확인 후 데이터에 반영되면 이 이슈가 자동으로 닫힙니다.';
+            } else {
+              body = `⚠️ 자동 브릿지 호출 실패 (HTTP ${code}). 운영자가 수동으로 처리할 예정입니다.`;
+            }
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
+
+      - name: Add "queued" label on success
+        if: steps.ingest.outputs.status == 'queued'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['queued']
+            });

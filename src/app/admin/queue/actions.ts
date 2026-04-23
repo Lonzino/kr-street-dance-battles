@@ -26,7 +26,7 @@ export async function approveRecord(recordId: string, overridePayload?: unknown)
     .where(eq(schema.sourceRecords.id, recordId))
     .limit(1);
 
-  if (!record) throw new Error("record 없음: " + recordId);
+  if (!record) throw new Error(`record 없음: ${recordId}`);
   if (record.status === "published") {
     throw new Error("이미 published 상태");
   }
