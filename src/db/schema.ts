@@ -89,6 +89,36 @@ export const sourceTypeEnum = pgEnum("source_type", [
   "manual",
 ]);
 
+export const userRoleEnum = pgEnum("user_role", ["user", "organizer", "admin"]);
+
+// ────────────────────────────────────────────────
+// users — Supabase auth.users.id를 PK로 (Auth와 1:1)
+// ────────────────────────────────────────────────
+
+export const users = pgTable(
+  "users",
+  {
+    // Supabase auth.users.id와 동일. FK는 RLS·트리거로 별도 보장.
+    id: uuid("id").primaryKey(),
+    email: text("email"),
+    nickname: text("nickname"),
+    bio: text("bio"),
+    region: regionEnum("region"),
+    primaryGenres: danceGenreEnum("primary_genres").array(),
+    instagramHandle: text("instagram_handle"),
+    avatarUrl: text("avatar_url"),
+    role: userRoleEnum("role").notNull().default("user"),
+    /** 셀프 등록 승인 누적 카운트 — 3회 이상이면 화이트리스트 즉시 게시 가능. */
+    approvedSubmissions: integer("approved_submissions").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdateFn(() => new Date()),
+  },
+  (t) => [uniqueIndex("users_nickname_uniq").on(t.nickname)],
+);
+
 // ────────────────────────────────────────────────
 // crews — battles보다 먼저 선언 (battles에서 참조 가능)
 // ────────────────────────────────────────────────

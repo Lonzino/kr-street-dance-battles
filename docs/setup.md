@@ -71,43 +71,89 @@ npm run ingest:url -- "5월 4일 부천 힙합 페스티벌. 1on1 힙합/팝핑/
 
 콘솔에 `record=<UUID>, confidence=0.85` 같은 출력. http://localhost:3000/admin/queue 에서 확인.
 
-## 3. Admin 인증
+## 3. 사용자 인증 (Supabase Auth)
 
-기본 제공: **단일 비밀번호 + JWT 쿠키 (Edge proxy)**.
+방문자가 로그인해서 북마크·알림·셀프 등록 등을 할 수 있게 하는 흐름.
+운영자(admin) JWT 인증과는 **별도** 시스템 — 둘 다 동시 동작 가능.
+
+### 3-1. Supabase Auth Provider 활성화
+
+Supabase Dashboard → **Authentication** → **Providers**:
+
+#### Kakao
+
+1. https://developers.kakao.com → 애플리케이션 추가
+2. **앱 키** → REST API 키 복사
+3. **카카오 로그인** → 활성화 → Redirect URI 추가:
+   - `https://<your-project>.supabase.co/auth/v1/callback`
+4. **동의 항목** → 닉네임·이메일 권한 ON
+5. **보안** → Client Secret 발급 → 복사
+6. Supabase Dashboard → Authentication → Providers → **Kakao** ON
+   - Client ID = REST API 키
+   - Client Secret = 카카오 보안 시크릿
+
+#### Google
+
+1. https://console.cloud.google.com → 프로젝트 생성
+2. **API & Services** → **OAuth consent screen** 설정
+3. **Credentials** → **Create OAuth client ID** → Web application
+4. Authorized redirect URI:
+   - `https://<your-project>.supabase.co/auth/v1/callback`
+5. Client ID + Secret 복사
+6. Supabase Dashboard → Authentication → Providers → **Google** ON
+
+### 3-2. 환경변수
+
+`.env.local`에 추가:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJI...
+```
+
+(Anon key는 클라이언트 노출 OK — Supabase RLS로 보호)
+
+### 3-3. RLS 정책 (Supabase SQL Editor)
+
+`users` 테이블 RLS 켜고 다음 정책:
+
+```sql
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+
+-- 자기 row만 읽고 수정 가능
+CREATE POLICY "users_self_select" ON users FOR SELECT
+  USING (auth.uid() = id);
+CREATE POLICY "users_self_update" ON users FOR UPDATE
+  USING (auth.uid() = id);
+
+-- 인증 사용자는 자기 row insert
+CREATE POLICY "users_self_insert" ON users FOR INSERT
+  WITH CHECK (auth.uid() = id);
+```
+
+### 3-4. 테스트
+
+```bash
+npm run dev
+```
+
+→ http://localhost:3000/login → 카카오/구글 로그인 → /profile 자동 이동.
+
+## 4. 운영자(Admin) 인증
+
+`/admin/*` 접근 시 단일 비밀번호 + JWT 쿠키 (Supabase Auth와 별도).
 `ADMIN_PASSWORD`와 `JWT_SECRET`만 설정하면 즉시 동작.
 인메모리 rate limit (IP당 5회/분) 포함.
 
 **관련 파일:**
-- `src/proxy.ts` — `/admin/*`, `/api/admin/*` 보호 (Next.js 16 proxy 컨벤션)
+- `src/proxy.ts` — `/admin/*`, `/api/admin/*` 보호
 - `src/lib/auth.ts` — JWT 발급/검증, timing-safe 비밀번호 비교
-- `src/app/admin/login/page.tsx` — 로그인 폼 + server action
+- `src/app/admin/login/page.tsx` — 로그인 폼
 
-### 강화 옵션 (운영자 여러 명 / OAuth 필요 시)
+### 강화 옵션 (운영자 여러 명 필요 시)
 
-#### 옵션 A: Clerk
-
-```bash
-npm install @clerk/nextjs
-```
-
-`src/proxy.ts` 교체:
-```ts
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-
-const isAdmin = createRouteMatcher(["/admin(.*)"]);
-
-export default clerkMiddleware(async (auth, req) => {
-  if (isAdmin(req)) await auth.protect();
-});
-
-export const config = {
-  matcher: ["/((?!_next|.*\\..*).*)"],
-};
-```
-
-#### 옵션 B: Supabase Auth
-
-(별도 가이드 예정)
+향후 `users.role='admin'`으로 통일 가능 (Supabase Auth 기반).
+현재는 단일 비밀번호로 충분.
 
 ### Rate limit 강화 (다중 인스턴스)
 
@@ -118,7 +164,7 @@ export const config = {
 npm install @upstash/ratelimit @upstash/redis
 ```
 
-## 4. Vercel 배포
+## 5. Vercel 배포
 
 ```bash
 # Vercel CLI 또는 dashboard 연결
@@ -128,4 +174,9 @@ vercel --prod
 환경변수:
 - `DATABASE_URL`
 - `ANTHROPIC_API_KEY`
-- (Clerk 사용 시) `CLERK_*` 키
+- `ADMIN_PASSWORD`, `JWT_SECRET`
+- `INGEST_TOKEN`, `CRON_SECRET`
+- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `NEXT_PUBLIC_SITE_URL` (실제 도메인)
+
+배포 후 Supabase Auth Provider의 Site URL을 실제 도메인으로 업데이트 필수.

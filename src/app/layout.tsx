@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Noto_Sans_KR } from "next/font/google";
 import Link from "next/link";
+import { Suspense } from "react";
 import "./globals.css";
+import { UserMenu } from "@/components/UserMenu";
 
 const notoSansKR = Noto_Sans_KR({
   variable: "--font-sans-ko",
@@ -44,7 +46,7 @@ export default function RootLayout({
 function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2">
           <span className="font-display text-2xl tracking-wider text-accent">KR</span>
           <span className="text-sm font-bold sm:text-base">STREET DANCE BATTLES</span>
@@ -53,6 +55,9 @@ function SiteHeader() {
           <NavLink href="/">배틀</NavLink>
           <NavLink href="/crews">크루</NavLink>
           <NavLink href="/about">소개</NavLink>
+          <Suspense fallback={null}>
+            <UserMenu />
+          </Suspense>
         </nav>
       </div>
     </header>
