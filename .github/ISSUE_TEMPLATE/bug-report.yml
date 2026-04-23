@@ -1,0 +1,48 @@
+name: 🐛 버그·오탈자·오정보 신고
+description: 사이트 동작 오류 또는 데이터 오류를 신고합니다.
+title: "[버그] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: dropdown
+    id: category
+    attributes:
+      label: 유형
+      options:
+        - 데이터 오류 (배틀/크루 정보 오기재·오탈자)
+        - 사이트 동작 오류 (페이지 로드/필터/링크)
+        - 디자인/UI 문제
+        - 기타
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: 문제 발생 URL
+      placeholder: "https://.../battles/line-up-season-11-2026"
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 기대한 동작/정보
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 실제 동작/정보
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 근거/스크린샷 (선택)
+      description: 오정보 신고면 정정 출처 링크 필수
+
+  - type: input
+    id: env
+    attributes:
+      label: 환경 (선택)
+      placeholder: "Chrome 130 / macOS 14 / iPhone 15"

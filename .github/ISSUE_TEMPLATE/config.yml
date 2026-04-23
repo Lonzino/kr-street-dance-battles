@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discord 배틀 제보 채널
+    url: https://github.com/Lonzino/kr-street-dance-battles#배틀-정보-제보--수정
+    about: 간단한 URL 한 줄 제보는 Discord가 더 빠릅니다 (봇이 자동 처리).

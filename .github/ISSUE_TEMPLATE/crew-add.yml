@@ -1,0 +1,121 @@
+name: 👥 크루 추가
+description: 스트릿 댄스 크루 정보를 추가합니다.
+title: "[크루] "
+labels: ["crew-add", "needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 크루 추가 폼
+        크루 소개는 최대한 **팩트 기반**으로. 주관적 평가(예: "최고의") 대신 실적/연도 등 검증 가능한 정보 우선.
+
+  - type: input
+    id: name
+    attributes:
+      label: 크루명 (공식 표기)
+      placeholder: "예: Jinjo Crew"
+    validations:
+      required: true
+
+  - type: input
+    id: korean_name
+    attributes:
+      label: 한글 표기 (선택)
+      placeholder: "예: 진조크루"
+
+  - type: input
+    id: founded
+    attributes:
+      label: 결성 연도 (선택)
+      placeholder: "2001"
+
+  - type: dropdown
+    id: region
+    attributes:
+      label: 지역 (활동 거점)
+      options:
+        - 서울 (seoul)
+        - 경기 (gyeonggi)
+        - 인천 (incheon)
+        - 부산 (busan)
+        - 대구 (daegu)
+        - 대전 (daejeon)
+        - 광주 (gwangju)
+        - 울산 (ulsan)
+        - 세종 (sejong)
+        - 강원 (gangwon)
+        - 충북 (chungbuk)
+        - 충남 (chungnam)
+        - 전북 (jeonbuk)
+        - 전남 (jeonnam)
+        - 경북 (gyeongbuk)
+        - 경남 (gyeongnam)
+        - 제주 (jeju)
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: genres
+    attributes:
+      label: 주력 장르
+      options:
+        - label: 비보잉 (bboying)
+        - label: 팝핑 (popping)
+        - label: 락킹 (locking)
+        - label: 힙합 (hiphop)
+        - label: 하우스 (house)
+        - label: 크럼프 (krump)
+        - label: 왁킹 (waacking)
+        - label: 보깅 (voguing)
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 소개
+      description: 실적·배출 멤버·특이점 등 팩트 중심
+      placeholder: |
+        - 2005 Battle of the Year 세계 챔피언
+        - 전주비보이그랑프리 주관
+    validations:
+      required: true
+
+  - type: input
+    id: leader
+    attributes:
+      label: 리더 / 대표 (선택)
+
+  - type: input
+    id: instagram
+    attributes:
+      label: 인스타그램 URL (선택)
+      placeholder: "https://instagram.com/..."
+
+  - type: input
+    id: youtube
+    attributes:
+      label: 유튜브 URL (선택)
+
+  - type: textarea
+    id: aliases
+    attributes:
+      label: 별칭 / 이명 (선택)
+      description: 기사·타 자료에서 쓰이는 다른 표기. 크루-배틀 결과 매칭 향상용
+      placeholder: |
+        Jinjo
+        진조
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: 출처 🔗
+      description: 공식 채널 또는 보도 링크
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 확인
+      options:
+        - label: 크루 당사자 또는 공개 출처 기반 정보입니다.
+          required: true

@@ -1,0 +1,184 @@
+name: 🔥 배틀 제보
+description: 한국에서 열린/열릴 스트릿 댄스 배틀 정보를 제보합니다.
+title: "[배틀] "
+labels: ["battle-report", "needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 배틀 제보 폼
+        기억나는 만큼만 채워도 됩니다. **출처 링크**만 있으면 운영자가 나머지를 채워넣을 수 있어요.
+
+  - type: input
+    id: title
+    attributes:
+      label: 대회명
+      description: 공식 명칭 (영문/한글 혼용 OK)
+      placeholder: "예: LINE UP Season 11"
+    validations:
+      required: true
+
+  - type: input
+    id: subtitle
+    attributes:
+      label: 부제 (선택)
+      placeholder: "예: 배틀 라인업 시즌 11"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 대회 소개
+      description: 규모·역사·특이점 등 자유 기술
+    validations:
+      required: false
+
+  - type: input
+    id: date
+    attributes:
+      label: 개최일 (YYYY-MM-DD)
+      description: 다일 대회면 시작일
+      placeholder: "2026-06-03"
+    validations:
+      required: true
+
+  - type: input
+    id: end_date
+    attributes:
+      label: 종료일 (YYYY-MM-DD, 선택)
+      placeholder: "2026-06-08"
+
+  - type: input
+    id: deadline
+    attributes:
+      label: 접수 마감일 (YYYY-MM-DD, 선택)
+
+  - type: checkboxes
+    id: genres
+    attributes:
+      label: 장르
+      description: 해당되는 것 모두 체크
+      options:
+        - label: 비보잉 (bboying)
+        - label: 팝핑 (popping)
+        - label: 락킹 (locking)
+        - label: 힙합 (hiphop)
+        - label: 하우스 (house)
+        - label: 크럼프 (krump)
+        - label: 왁킹 (waacking)
+        - label: 보깅 (voguing)
+        - label: 올스타일 (allstyle)
+        - label: 혼합/기타 (mixed)
+
+  - type: checkboxes
+    id: formats
+    attributes:
+      label: 배틀 포맷
+      options:
+        - label: 1vs1
+        - label: 2vs2
+        - label: 3vs3
+        - label: 4vs4
+        - label: 5vs5
+        - label: 7 to Smoke
+        - label: 크루 배틀
+        - label: 쇼케이스
+        - label: 사이퍼
+
+  - type: dropdown
+    id: status
+    attributes:
+      label: 현재 상태
+      options:
+        - 예정 (upcoming)
+        - 접수중 (registration)
+        - 진행중 (ongoing)
+        - 종료 (finished)
+        - 취소 (cancelled)
+    validations:
+      required: true
+
+  - type: input
+    id: venue
+    attributes:
+      label: 장소명
+      placeholder: "예: 국립아시아문화전당"
+
+  - type: input
+    id: address
+    attributes:
+      label: 주소
+      placeholder: "예: 광주 동구 문화전당로 38"
+
+  - type: dropdown
+    id: region
+    attributes:
+      label: 지역
+      options:
+        - 서울 (seoul)
+        - 경기 (gyeonggi)
+        - 인천 (incheon)
+        - 부산 (busan)
+        - 대구 (daegu)
+        - 대전 (daejeon)
+        - 광주 (gwangju)
+        - 울산 (ulsan)
+        - 세종 (sejong)
+        - 강원 (gangwon)
+        - 충북 (chungbuk)
+        - 충남 (chungnam)
+        - 전북 (jeonbuk)
+        - 전남 (jeonnam)
+        - 경북 (gyeongbuk)
+        - 경남 (gyeongnam)
+        - 제주 (jeju)
+        - 온라인 (online)
+    validations:
+      required: true
+
+  - type: input
+    id: organizer
+    attributes:
+      label: 주최/주관
+      placeholder: "예: 빛고을댄서스 (Bitgoeul Dancers)"
+
+  - type: textarea
+    id: prize
+    attributes:
+      label: 상금/특전 (선택)
+      placeholder: |
+        우승 300만원
+        준우승 150만원
+        Best4 50만원
+
+  - type: input
+    id: entry_fee
+    attributes:
+      label: 참가비 (원, 선택)
+      placeholder: "20000"
+
+  - type: textarea
+    id: links
+    attributes:
+      label: 공식 링크 / 출처 🔗
+      description: "인스타·공식 사이트·기사 등. 출처 1개 이상 필수. 형식: 라벨 | URL"
+      placeholder: |
+        공식 인스타그램 | https://instagram.com/...
+        보도자료 | https://...
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 기타 메모
+      placeholder: 심사위원, 게스트, 분위기, 보충 정보 등
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 확인
+      options:
+        - label: 제보 정보의 출처가 공식 채널이거나 공개된 보도입니다.
+          required: true
+        - label: 악의적 허위 정보가 아님을 확인합니다.
+          required: true
