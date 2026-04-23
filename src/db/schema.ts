@@ -378,3 +378,97 @@ export const editLog = pgTable(
   },
   (t) => [index("edit_log_battle_idx").on(t.battleId)],
 );
+
+// ────────────────────────────────────────────────
+// Phase A — 참가 신청 시스템
+// ────────────────────────────────────────────────
+
+export const registrationStatusEnum = pgEnum("registration_status", [
+  "pending", // 신청 후 주최자 승인 대기
+  "confirmed", // 승인 완료
+  "waitlist", // 정원 초과 — 대기
+  "cancelled", // 취소 (사용자 또는 주최자)
+  "checked_in", // 현장 체크인 완료
+  "no_show", // 노쇼
+]);
+
+export const paymentStatusEnum = pgEnum("payment_status", [
+  "unpaid", // 미입금
+  "paid", // 입금 확인 (주최자가 수동 마크)
+  "waived", // 면제 (초청·관계자)
+  "refunded", // 환불
+]);
+
+/**
+ * 한 배틀의 부문 (1on1 비보잉, 2on2 올스타일 등 — 같은 날 여러 부문 가능).
+ * 기존 battles.formats / battles.genres는 디스플레이 요약용 — 실제 신청은 categories로.
+ */
+export const battleCategories = pgTable(
+  "battle_categories",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    battleId: uuid("battle_id")
+      .notNull()
+      .references(() => battles.id, { onDelete: "cascade" }),
+    name: text("name").notNull(), // "1on1 비보잉", "2on2 올스타일"
+    genres: danceGenreEnum("genres").array().notNull(),
+    format: battleFormatEnum("format").notNull(),
+    maxParticipants: integer("max_participants"), // null = 무제한
+    registrationFee: integer("registration_fee"), // KRW (null = 무료)
+    paymentInstruction: text("payment_instruction"), // 계좌번호 / 토스 링크 / 안내문
+    closesAt: timestamp("closes_at", { withTimezone: true }), // 신청 마감 (null = 배틀 시작 직전)
+    sortOrder: integer("sort_order").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdateFn(() => new Date()),
+  },
+  (t) => [index("battle_categories_battle_idx").on(t.battleId)],
+);
+
+/**
+ * 사용자의 부문 참가 신청.
+ * 같은 (userId, categoryId) 중복 신청 방지 (uniqueIndex).
+ * checkInToken은 QR 코드로 인코딩 → 주최자가 스캔 → /admin/check-in/[token]
+ */
+export const registrations = pgTable(
+  "registrations",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    categoryId: uuid("category_id")
+      .notNull()
+      .references(() => battleCategories.id, { onDelete: "cascade" }),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    status: registrationStatusEnum("status").notNull().default("pending"),
+    paymentStatus: paymentStatusEnum("payment_status").notNull().default("unpaid"),
+    /** 2on2 / 크루배틀용 파트너 이름 또는 회원 핸들 */
+    partnerName: text("partner_name"),
+    /** 크루배틀 시 크루명 */
+    crewName: text("crew_name"),
+    /** 사용자가 신청 시 남긴 메모 */
+    note: text("note"),
+    /** 주최자가 보는 메모 (참가자에게 안 보임) */
+    organizerNote: text("organizer_note"),
+    /** QR 체크인 토큰 — 신청 시 자동 생성, registrations.id의 HMAC */
+    checkInToken: text("check_in_token").notNull(),
+    registeredAt: timestamp("registered_at", { withTimezone: true }).notNull().defaultNow(),
+    confirmedAt: timestamp("confirmed_at", { withTimezone: true }),
+    checkedInAt: timestamp("checked_in_at", { withTimezone: true }),
+    cancelledAt: timestamp("cancelled_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdateFn(() => new Date()),
+  },
+  (t) => [
+    uniqueIndex("registrations_user_category_uniq").on(t.userId, t.categoryId),
+    uniqueIndex("registrations_token_uniq").on(t.checkInToken),
+    index("registrations_category_idx").on(t.categoryId),
+    index("registrations_user_idx").on(t.userId),
+    index("registrations_status_idx").on(t.status),
+  ],
+);
