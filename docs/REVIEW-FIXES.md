@@ -335,9 +335,10 @@
 - [x] H8 seed 벌크 insert ✅ (트랜잭션 + values array)
 - [x] H9 loading.tsx 커밋 ✅
 - [x] M1 updatedAt 자동 갱신 ✅ ($onUpdateFn)
-- [ ] M2 풀텍스트 검색 — Postgres tsvector (배포 후)
-- [ ] M3 FilterBar 최적화 — useOptimistic (필요 시)
-- [ ] M4 크루 매칭 개선 — alias 테이블 (장기)
+- [x] M2 검색 ✅ (URL ?q= 텍스트 검색 — title/description/organizer/venue/tags/judges 매칭)
+      ※ Postgres tsvector는 데이터 100건+ 시 도입
+- [ ] M3 FilterBar 최적화 — useOptimistic (현재 Link 기반, 필요 시 client 전환)
+- [x] M4 크루 매칭 개선 ✅ (Crew.aliases 배열 추가)
 - [x] M5 LLM 모델 상수화 ✅ (lib/constants.ts)
 - [x] M6 eventStatus 분기 ✅ (offers.availability도 status별)
 - [x] M7 LLM 실패 DB 반영 ✅ (warnings + status 유지)
@@ -346,4 +347,4 @@
 - [x] L3 docs/TODO.md 갱신 ✅
 - [x] L4 README 로드맵 갱신 ✅
 - [x] L5 biome lint:fix 적용 ✅
-- [ ] L6 drizzle/ 디렉토리 — db:generate 사용 시 자동 생성
+- [x] L6 drizzle/0000_initial_schema.sql ✅ (pgEnum 6개 + 3 테이블 + FK)

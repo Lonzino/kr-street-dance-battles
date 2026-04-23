@@ -93,6 +93,7 @@ async function main() {
             slug: c.slug,
             name: c.name,
             koreanName: c.koreanName,
+            aliases: c.aliases,
             foundedYear: c.foundedYear,
             region: c.region,
             genres: c.genres,
@@ -109,6 +110,7 @@ async function main() {
           set: {
             name: sql`excluded.name`,
             koreanName: sql`excluded.korean_name`,
+            aliases: sql`excluded.aliases`,
             foundedYear: sql`excluded.founded_year`,
             region: sql`excluded.region`,
             genres: sql`excluded.genres`,

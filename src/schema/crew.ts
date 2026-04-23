@@ -5,6 +5,8 @@ export const Crew = z.object({
   slug: z.string().regex(/^[a-z0-9-]+$/),
   name: z.string().min(1),
   koreanName: z.string().optional(),
+  /** 표기 변형·약칭·구 이름. 배틀 결과 매칭 시 검색 후보. 예: ["Underground", "언더그라운드"]. */
+  aliases: z.array(z.string()).optional(),
   foundedYear: z.number().int().min(1970).max(2100).optional(),
   region: Region,
   genres: z.array(DanceGenre).min(1),

@@ -100,6 +100,7 @@ export const crews = pgTable(
     slug: text("slug").notNull(),
     name: text("name").notNull(),
     koreanName: text("korean_name"),
+    aliases: text("aliases").array(),
     foundedYear: integer("founded_year"),
     region: regionEnum("region").notNull(),
     genres: danceGenreEnum("genres").array().notNull(),

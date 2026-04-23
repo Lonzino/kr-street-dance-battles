@@ -1,4 +1,4 @@
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 import battlesJson from "@/data/battles.json";
 import crewsJson from "@/data/crews.json";
 import { getDb, isDbConfigured, schema } from "@/db/client";
@@ -62,6 +62,7 @@ function rowToCrew(r: CrewRow): Crew {
     slug: r.slug,
     name: r.name,
     koreanName: r.koreanName ?? undefined,
+    aliases: r.aliases ?? undefined,
     foundedYear: r.foundedYear ?? undefined,
     region: r.region as Region,
     genres: r.genres as DanceGenre[],
@@ -72,6 +73,12 @@ function rowToCrew(r: CrewRow): Crew {
     youtubeUrl: r.youtubeUrl ?? undefined,
     tags: r.tags ?? undefined,
   };
+}
+
+function crewMatchCandidates(c: Crew): string[] {
+  return [c.name, c.koreanName, ...(c.aliases ?? [])]
+    .filter(Boolean)
+    .map((s) => (s as string).toLowerCase().trim());
 }
 
 // ────────────────────────────────────────────────
@@ -147,11 +154,10 @@ export async function getAllCrewSlugs(): Promise<string[]> {
 
 /**
  * 결과(results)에 이 크루가 등장하는 배틀들 반환 (최신순).
- * 매칭은 크루 이름 또는 한글 이름 비교 (대소문자 무시).
+ * 매칭은 크루 이름 / 한글 이름 / aliases 배열 (대소문자·앞뒤 공백 무시).
  */
 export async function getBattlesByCrew(crew: Crew): Promise<{ battle: Battle; rank: number }[]> {
-  const candidates = [crew.name, crew.koreanName].filter(Boolean) as string[];
-  const lowered = candidates.map((c) => c.toLowerCase());
+  const lowered = crewMatchCandidates(crew);
   const all = await getAllBattles();
 
   const matches: { battle: Battle; rank: number }[] = [];
@@ -159,7 +165,7 @@ export async function getBattlesByCrew(crew: Crew): Promise<{ battle: Battle; ra
     if (!b.results) continue;
     for (const r of b.results) {
       if (!r.crew) continue;
-      if (lowered.includes(r.crew.toLowerCase())) {
+      if (lowered.includes(r.crew.toLowerCase().trim())) {
         matches.push({ battle: b, rank: r.rank });
       }
     }
@@ -170,12 +176,12 @@ export async function getBattlesByCrew(crew: Crew): Promise<{ battle: Battle; ra
 /**
  * 배틀 결과 텍스트의 크루 이름이 등록된 크루와 매칭되면 slug 반환.
  * battles/[slug] 페이지에서 결과를 크루 페이지로 링크할 때 사용.
+ * name / koreanName / aliases 배열 모두 후보로.
  */
 export async function findCrewSlugByName(name: string): Promise<string | undefined> {
-  const lower = name.toLowerCase();
+  const lower = name.toLowerCase().trim();
   const crews = await getAllCrews();
-  return crews.find((c) => c.name.toLowerCase() === lower || c.koreanName?.toLowerCase() === lower)
-    ?.slug;
+  return crews.find((c) => crewMatchCandidates(c).includes(lower))?.slug;
 }
 
 // ────────────────────────────────────────────────

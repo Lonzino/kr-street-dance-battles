@@ -37,6 +37,8 @@ const REGION_OPTIONS: Region[] = [
 export function FilterBar({ current }: { current: BattleFilters }) {
   return (
     <div className="space-y-3 rounded-xl border border-border bg-muted/20 p-4">
+      <SearchForm current={current} />
+
       <FilterRow label="상태">
         {STATUS_OPTIONS.map((s) => (
           <Chip key={s} href={buildHref(current, { status: s })} active={current.status === s}>
@@ -69,6 +71,30 @@ export function FilterBar({ current }: { current: BattleFilters }) {
         </div>
       )}
     </div>
+  );
+}
+
+function SearchForm({ current }: { current: BattleFilters }) {
+  // GET 폼 — 현재 필터 상태(장르/지역/상태)를 hidden input으로 보존
+  return (
+    <form action="/" method="get" className="flex gap-2">
+      {current.genre && <input type="hidden" name="genre" value={current.genre} />}
+      {current.region && <input type="hidden" name="region" value={current.region} />}
+      {current.status && <input type="hidden" name="status" value={current.status} />}
+      <input
+        type="search"
+        name="q"
+        defaultValue={current.q ?? ""}
+        placeholder="대회명·주최·장소·태그·심사위원 검색"
+        className="flex-1 rounded-lg border border-border bg-background/60 px-3 py-2 text-sm focus:border-accent focus:outline-none"
+      />
+      <button
+        type="submit"
+        className="rounded-lg border border-border bg-muted/40 px-3 text-xs hover:border-accent"
+      >
+        검색
+      </button>
+    </form>
   );
 }
 
