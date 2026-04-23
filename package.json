@@ -15,7 +15,17 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "seed": "tsx scripts/seed.ts",
-    "ingest:url": "tsx scripts/ingest-url.ts"
+    "ingest:url": "tsx scripts/ingest-url.ts",
+    "new:battle": "tsx scripts/new-battle.ts",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,css,md}": [
+      "biome check --write --no-errors-on-unmatched"
+    ],
+    "src/data/*.json": [
+      "tsx scripts/validate-data.ts"
+    ]
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.90.0",
@@ -30,11 +40,15 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.12",
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "drizzle-kit": "^0.31.10",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5"

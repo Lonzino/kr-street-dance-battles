@@ -1,0 +1,54 @@
+version: 2
+updates:
+  # npm 의존성 — 주 1회
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Seoul"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    groups:
+      # 프로덕션 핵심 — 개별 PR (리스크 큼)
+      next-react:
+        patterns:
+          - "next"
+          - "react"
+          - "react-dom"
+          - "@types/react*"
+      # Drizzle / DB 스택
+      drizzle:
+        patterns:
+          - "drizzle-*"
+          - "postgres"
+      # 개발 도구 — 묶음 PR
+      dev-tools:
+        dependency-type: "development"
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "drizzle-*"
+
+  # Discord 봇 services/ 디렉토리는 별도 package.json 있으면 추가
+  # - package-ecosystem: "npm"
+  #   directory: "/services/discord-bot"
+  #   schedule:
+  #     interval: "weekly"
+
+  # GitHub Actions 버전 업데이트
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "ci"
+    commit-message:
+      prefix: "ci(deps)"
