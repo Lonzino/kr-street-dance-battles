@@ -1,5 +1,7 @@
 # Docs
 
+- **[OPERATIONS.md](./OPERATIONS.md)** — 운영 매뉴얼 (일상 작업, 장애 대응, 보안 사고)
+- **[SECRETS.md](./SECRETS.md)** — 시크릿 관리 + 회전 절차
 - [ACTIVATION.md](./ACTIVATION.md) — P0~P3 기능 활성화 가이드 (외부 서비스 셋업)
 - [SECURITY-REVIEW.md](./SECURITY-REVIEW.md) — 인증·보안 감사 (배포 전 체크리스트)
 - [TODO.md](./TODO.md) — 남은 작업 우선순위 (Critical / High / Medium / Low)
