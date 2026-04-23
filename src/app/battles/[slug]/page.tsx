@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { findCrewSlugByName, getAllBattleSlugs, getBattleBySlug } from "@/lib/data";
@@ -96,6 +97,19 @@ export default async function BattleDetailPage({ params }: { params: Promise<{ s
           <p className="mt-2 text-base text-muted-foreground">{battle.subtitle}</p>
         )}
       </header>
+
+      {battle.posterUrl && (
+        <div className="mb-8 overflow-hidden rounded-xl border border-border bg-muted/30">
+          <Image
+            src={battle.posterUrl}
+            alt={`${battle.title} 포스터`}
+            width={1200}
+            height={1200}
+            className="h-auto w-full"
+            priority
+          />
+        </div>
+      )}
 
       <div className="grid gap-8 sm:grid-cols-[1fr_280px]">
         <div className="space-y-8">
