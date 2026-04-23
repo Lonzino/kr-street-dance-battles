@@ -14,7 +14,8 @@ import {
 } from "@/lib/labels";
 
 export async function generateStaticParams() {
-  return getAllBattleSlugs().map((slug) => ({ slug }));
+  const slugs = await getAllBattleSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -23,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const battle = getBattleBySlug(slug);
+  const battle = await getBattleBySlug(slug);
   if (!battle) return { title: "배틀을 찾을 수 없음" };
   return {
     title: battle.title,
@@ -33,8 +34,21 @@ export async function generateMetadata({
 
 export default async function BattleDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const battle = getBattleBySlug(slug);
+  const battle = await getBattleBySlug(slug);
   if (!battle) notFound();
+
+  // results의 크루 이름 → slug 미리 일괄 조회 (렌더 중 async 회피)
+  const crewSlugMap: Record<string, string | undefined> = {};
+  if (battle.results) {
+    await Promise.all(
+      battle.results
+        .map((r) => r.crew)
+        .filter((name): name is string => Boolean(name))
+        .map(async (name) => {
+          crewSlugMap[name] = await findCrewSlugByName(name);
+        }),
+    );
+  }
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -166,7 +180,7 @@ export default async function BattleDetailPage({ params }: { params: Promise<{ s
               <ul className="space-y-1.5">
                 {battle.results.map((r) => {
                   const name = r.crew ?? r.dancer ?? "";
-                  const crewSlug = r.crew ? findCrewSlugByName(r.crew) : undefined;
+                  const crewSlug = r.crew ? crewSlugMap[r.crew] : undefined;
                   return (
                     <li key={r.rank} className="flex items-baseline gap-3 text-sm">
                       <span className="w-8 font-display text-accent">{r.rank}위</span>

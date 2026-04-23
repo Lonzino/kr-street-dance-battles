@@ -5,7 +5,8 @@ import { getAllCrewSlugs, getBattlesByCrew, getCrewBySlug } from "@/lib/data";
 import { formatDateKR, genreLabel, regionLabel } from "@/lib/labels";
 
 export async function generateStaticParams() {
-  return getAllCrewSlugs().map((slug) => ({ slug }));
+  const slugs = await getAllCrewSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -14,7 +15,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const crew = getCrewBySlug(slug);
+  const crew = await getCrewBySlug(slug);
   if (!crew) return { title: "크루를 찾을 수 없음" };
   return {
     title: crew.name,
@@ -24,10 +25,10 @@ export async function generateMetadata({
 
 export default async function CrewDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const crew = getCrewBySlug(slug);
+  const crew = await getCrewBySlug(slug);
   if (!crew) notFound();
 
-  const battles = getBattlesByCrew(crew);
+  const battles = await getBattlesByCrew(crew);
 
   return (
     <article className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14">

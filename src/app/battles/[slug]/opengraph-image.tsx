@@ -6,7 +6,7 @@ export const contentType = "image/png";
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const battle = getBattleBySlug(slug);
+  const battle = await getBattleBySlug(slug);
   const title = battle?.title ?? "Battle";
   const date = battle?.date ?? "";
   const venue = battle?.venue.name ?? "";
@@ -45,7 +45,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           display: "flex",
         }}
       >
-        {title.length > 40 ? title.slice(0, 40) + "…" : title}
+        {title.length > 40 ? `${title.slice(0, 40)}…` : title}
       </div>
 
       <div
@@ -57,7 +57,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         }}
       >
         {date && <span>{date}</span>}
-        {venue && <span>· {venue.length > 30 ? venue.slice(0, 30) + "…" : venue}</span>}
+        {venue && <span>· {venue.length > 30 ? `${venue.slice(0, 30)}…` : venue}</span>}
       </div>
     </div>,
     { ...size },

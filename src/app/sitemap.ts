@@ -1,9 +1,8 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/constants";
 import { getAllBattles, getAllCrews } from "@/lib/data";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kr-street-dance-battles.vercel.app";
-
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   const staticPaths: MetadataRoute.Sitemap = [
@@ -12,14 +11,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.3 },
   ];
 
-  const battlePaths: MetadataRoute.Sitemap = getAllBattles().map((b) => ({
+  const [battles, crews] = await Promise.all([getAllBattles(), getAllCrews()]);
+
+  const battlePaths: MetadataRoute.Sitemap = battles.map((b) => ({
     url: `${SITE_URL}/battles/${b.slug}`,
     lastModified: now,
     changeFrequency: b.status === "finished" ? "yearly" : "weekly",
     priority: b.status === "registration" ? 0.9 : 0.6,
   }));
 
-  const crewPaths: MetadataRoute.Sitemap = getAllCrews().map((c) => ({
+  const crewPaths: MetadataRoute.Sitemap = crews.map((c) => ({
     url: `${SITE_URL}/crews/${c.slug}`,
     lastModified: now,
     changeFrequency: "monthly",

@@ -19,7 +19,7 @@ export default async function HomePage({
   const filters = parseFilters(sp);
   const filtersActive = hasAnyFilter(filters);
 
-  const all = getAllBattles();
+  const all = await getAllBattles();
   const filtered = applyFilters(all, filters);
   const now = new Date();
 

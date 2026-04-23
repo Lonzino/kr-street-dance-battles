@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   description: "한국 스트릿 댄스 크루 디렉토리",
 };
 
-export default function CrewsPage() {
-  const crews = getAllCrews();
+export default async function CrewsPage() {
+  const crews = await getAllCrews();
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">

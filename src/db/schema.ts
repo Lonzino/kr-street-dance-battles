@@ -214,7 +214,13 @@ export const battles = pgTable(
     links: jsonb("links")
       .notNull()
       .default([])
-      .$type<Array<{ label: string; url: string; type: string }>>(),
+      .$type<
+        Array<{
+          label: string;
+          url: string;
+          type: "instagram" | "youtube" | "registration" | "official" | "tiktok" | "other";
+        }>
+      >(),
     results: jsonb("results").$type<Array<{ rank: number; dancer?: string; crew?: string }>>(),
     tags: text("tags").array(),
 

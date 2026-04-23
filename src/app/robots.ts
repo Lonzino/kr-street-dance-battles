@@ -1,10 +1,9 @@
 import type { MetadataRoute } from "next";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://kr-street-dance-battles.vercel.app";
+import { SITE_URL } from "@/lib/constants";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [{ userAgent: "*", allow: "/", disallow: ["/admin", "/api/admin"] }],
+    rules: [{ userAgent: "*", allow: "/", disallow: ["/admin", "/api/admin", "/api/cron"] }],
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }
