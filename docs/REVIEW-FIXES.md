@@ -1,15 +1,28 @@
 # 리뷰 수정 항목 정리
 
 **리뷰 일자**: 2026-04-23
-**리뷰 범위**: 전체 코드베이스 (main, 커밋 `217fff0`까지)
+**최종 갱신**: 2026-04-23 (본 세션에서 unused import + useOptionalChain 정리, 본문 상태 표기 동기화)
+**리뷰 범위**: 전체 코드베이스 (main, 커밋 `217fff0` 기준 작성 → `a43520f`까지 후속 반영)
 **상태 표기**: ⏳ 대기 · 🔄 진행중 · ✅ 완료 · ❌ 보류
+
+## 현황 요약
+
+- **Critical 5건** (C1~C5): 전부 ✅
+- **High 9건** (H1~H9): 전부 ✅
+- **Medium 7건** (M1~M7): 4건 ✅, 3건 ❌(보류: M2 풀텍스트 / M3 FilterBar 최적화 / M4 크루 매칭 alias)
+- **Low 6건** (L1~L6): 5건 ✅, 1건 ❌(L6 db:generate 시 자동)
+- **빌드**: `npm run build` 통과 (34 페이지, 배틀 11 + 크루 10 SSG)
+- **린트**: `biome check` 0 warning
+- **타입**: `tsc --noEmit` 0 error
+
+배포 차단 항목 없음. 남은 ❌는 모두 "배포 후/필요 시/장기" 분류.
 
 ---
 
 ## 🚨 CRITICAL (배포 전 반드시)
 
 ### C1. 공개 사이트와 DB 분리 — admin 승인이 공개 사이트에 안 나타남
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `src/lib/data.ts:13-14`
 - **현재**:
   ```ts
@@ -31,7 +44,7 @@
 - **예상 시간**: 2~3시간
 
 ### C2. CI·타입체크 실패 상태
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `biome.json:2`, `tsconfig.json`, `services/discord-bot/index.ts`
 - **문제**:
   - `biome.json` 스키마 `2.2.6` vs CLI `2.4.12` — `biome migrate` 필요
@@ -43,7 +56,7 @@
 - **예상 시간**: 10분
 
 ### C3. Discord 봇이 호출하는 `/api/ingest` 엔드포인트 미구현
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**:
   - `services/discord-bot/index.ts:10` (주석의 `/api/admin/ingest`)
   - `services/discord-bot/README.md:71` (`/api/ingest` — URL 불일치)
@@ -65,7 +78,7 @@
 - **예상 시간**: 1시간
 
 ### C4. 프롬프트 인젝션 방어 전무
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `src/ingestion/parsers/llm-extract.ts:22-36` (system prompt), `:69` (user message)
 - **문제**: IG 캡션 / Discord 제보 본문이 user message에 raw 삽입. 악의적 입력이 LLM 지시를 덮어쓸 수 있음.
 - **수정**:
@@ -83,7 +96,7 @@
 - **예상 시간**: 30분
 
 ### C5. 중복 수집 시 LLM 재호출 = 중복 과금
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `src/ingestion/pipeline.ts:41`
 - **문제**: `onConflictDoUpdate` 직후 **무조건** `extractBattleFromText` 호출. 같은 인스타 포스트 100번 제보 → Anthropic 100번 과금.
 - **수정**:
@@ -104,7 +117,7 @@
 ## ⭐ HIGH (초기 운영 안정성)
 
 ### H1. Zod ↔ Drizzle 스키마 불일치
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `src/schema/*.ts`, `src/db/schema.ts`
 - **문제**:
 
@@ -121,7 +134,7 @@
 - **예상 시간**: 1~2시간
 
 ### H2. FK(외래키) 부재
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `src/db/schema.ts:59`, `:111`
 - **문제**:
   - `battles.sourceRecordId`, `source_records.parsedBattleId` 모두 raw uuid, `references()` 없음
@@ -136,7 +149,7 @@
 - **예상 시간**: FK만 30분 / join 테이블은 별도 큰 작업
 
 ### H3. `checkPassword`가 실제로는 타이밍 세이프 아님
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `src/lib/auth.ts:28-32`
 - **문제**: 길이가 다르면 더미 루프 후 즉시 `return false` — 길이 같을 때보다 훨씬 빠름
 - **수정** (옵션 A, Edge 호환):
@@ -157,14 +170,14 @@
 - **예상 시간**: 10분
 
 ### H4. 로그인 brute force 방어 전무
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `src/app/admin/login/page.tsx` 서버 액션
 - **문제**: `/admin/login` POST에 rate limit 없음. 8자 비번이면 몇 시간 내 크랙.
 - **수정**: `@upstash/ratelimit` + Upstash Redis 또는 `@vercel/kv`로 IP당 5회/분 제한
 - **예상 시간**: 30분
 
 ### H5. 로그아웃 redirect status
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `src/app/api/admin/logout/route.ts:8`
 - **문제**:
   - `NextResponse.redirect()` 기본 307 → POST 메서드 유지 → 일부 브라우저가 `/admin/login`에 POST 재시도
@@ -177,7 +190,7 @@
 - **예상 시간**: 10분
 
 ### H6. Instagram 어댑터 HTTP 처리 허술
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `src/ingestion/sources/instagram.ts:20-24`
 - **문제**:
   - timeout 없음 (hang 가능)
@@ -201,20 +214,20 @@
 - **예상 시간**: 30분
 
 ### H7. `posterUrl` dead code
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: Zod/DB/seed/actions에 있지만 `battles/[slug]/page.tsx`에 렌더 없음
 - **수정**: 배틀 상세 페이지에 `<Image src={battle.posterUrl} />` 추가 또는 필드 제거 결정. `next.config.ts`에 `images.remotePatterns` 필요.
 - **예상 시간**: 30분
 
 ### H8. Seed 스크립트 직렬 처리
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `scripts/seed.ts:31-81`
 - **문제**: `for` 루프 + `await` — 수백 건부터 느림
 - **수정**: 벌크 insert (`db.insert(schema.battles).values(arrayOfBattles).onConflictDoUpdate(...)`) 또는 트랜잭션
 - **예상 시간**: 30분
 
 ### H9. `src/app/loading.tsx`가 untracked
-- **상태**: ⏳
+- **상태**: ✅
 - **수정**: `git add src/app/loading.tsx && git commit`
 - **예상 시간**: 1분
 
@@ -223,7 +236,7 @@
 ## 🔧 MEDIUM (품질/확장성)
 
 ### M1. Drizzle `updatedAt` 자동 갱신 없음
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `src/db/schema.ts`
 - **수정**: `.$onUpdateFn(() => new Date())` 또는 Postgres trigger
   ```ts
@@ -231,7 +244,7 @@
   ```
 
 ### M2. 검색 기능 부재
-- **상태**: ⏳
+- **상태**: ❌ (배포 후 데이터 쌓이면 검토)
 - **문제**: 제목/설명 풀텍스트 검색 없음 → 아카이브 커질수록 발견성 하락
 - **수정**: Postgres `tsvector` 컬럼 + GIN 인덱스 + `to_tsquery` 쿼리
   ```ts
@@ -241,29 +254,29 @@
   ```
 
 ### M3. FilterBar가 전체 서버 재렌더 트리거
-- **상태**: ⏳
+- **상태**: ❌ (필요 시)
 - **파일**: `src/components/FilterBar.tsx`
 - **수정**: `useOptimistic` + client 필터링 옵션 검토 (또는 React 19 `useSearchParams` 최적화 패턴)
 
 ### M4. 크루↔배틀 매칭이 단순 대소문자 비교
-- **상태**: ⏳
+- **상태**: ❌ (장기 — alias 테이블 도입 시)
 - **파일**: `src/lib/data.ts:64`
 - **문제**: "Underground" vs "under ground" vs "언더그라운드" 매칭 실패
 - **수정**: alias 테이블(`crew_aliases`) 또는 fuzzy match (Levenshtein/trigram)
 
 ### M5. LLM 모델 하드코딩
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `src/ingestion/pipeline.ts:49`, `src/ingestion/parsers/llm-extract.ts:54`
 - **수정**: `src/lib/constants.ts`에 `LLM_MODEL = "claude-sonnet-4-6"` 상수화
 
 ### M6. JSON-LD `eventStatus` 분기 부족
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `src/app/battles/[slug]/page.tsx:45-48`
 - **문제**: `cancelled`만 `EventCancelled`, 나머지 모두 `EventScheduled`. `finished` 이벤트도 scheduled로 마크되어 Google이 "진행 예정"으로 해석 가능
 - **수정**: `finished` → `EventCompleted`(없음), 대신 `endDate` 과거면 스키마에서 생략 또는 별도 처리
 
 ### M7. `extractBattleFromText` 에러 시 DB 상태 미반영
-- **상태**: ⏳
+- **상태**: ✅
 - **파일**: `src/ingestion/pipeline.ts:41`
 - **문제**: LLM 실패 시 source_record가 `raw`로 남고 재시도 플래그도 없음
 - **수정**: try/catch로 `status: "raw"` 유지 + `parseWarnings: ["extraction failed: ..."]` 기록
@@ -274,12 +287,12 @@
 
 | # | 항목 | 파일 | 상태 |
 |---|------|------|------|
-| L1 | `next.config.ts` `images.remotePatterns` 추가 | `next.config.ts` | ⏳ |
-| L2 | `docs/setup.md` Clerk 예시 `middleware.ts` → `proxy.ts` | `docs/setup.md:80-96` | ⏳ |
-| L3 | `docs/TODO.md` High 항목 체크박스 업데이트 (sitemap/robots/og-image/error/loading/FilterBar 모두 구현됨) | `docs/TODO.md:32-40` | ⏳ |
-| L4 | `README.md` "Admin 인증" 미완 표기 업데이트 | `README.md:92` | ⏳ |
-| L5 | biome 경고 3건 자동 수정 (`npm run lint:fix`) | `src/app/admin/queue/actions.ts:29`, `src/app/battles/[slug]/opengraph-image.tsx:48,60` | ⏳ |
-| L6 | `drizzle/` 디렉토리 생성 (db:generate 쓸 경우) | `drizzle/` | ⏳ |
+| L1 | `next.config.ts` `images.remotePatterns` 추가 | `next.config.ts` | ✅ |
+| L2 | `docs/setup.md` Clerk 예시 `middleware.ts` → `proxy.ts` | `docs/setup.md:80-96` | ✅ |
+| L3 | `docs/TODO.md` High 항목 체크박스 업데이트 | `docs/TODO.md:32-40` | ✅ |
+| L4 | `README.md` "Admin 인증" 미완 표기 업데이트 | `README.md:92` | ✅ |
+| L5 | biome 경고 자동 수정 + 남은 2건 수동 수정 | `src/lib/data.ts:1`, `src/app/admin/login/page.tsx:47` | ✅ |
+| L6 | `drizzle/` 디렉토리 생성 (db:generate 쓸 경우) | `drizzle/` | ❌ (db:generate 사용 시 자동 생성) |
 
 ---
 

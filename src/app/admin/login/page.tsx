@@ -44,7 +44,7 @@ export default async function LoginPage({
       path: "/",
       maxAge: COOKIE_MAX_AGE_S,
     });
-    redirect(sp.from && sp.from.startsWith("/admin") ? sp.from : "/admin");
+    redirect(sp.from?.startsWith("/admin") ? sp.from : "/admin");
   }
 
   const errorMessage =
