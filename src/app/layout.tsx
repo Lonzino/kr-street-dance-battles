@@ -97,6 +97,14 @@ function SiteFooter() {
             후원
           </Link>
         </p>
+        <p className="mt-2 flex flex-wrap justify-center gap-3">
+          <Link href="/terms" className="hover:text-foreground">
+            이용약관
+          </Link>
+          <Link href="/privacy" className="hover:text-foreground">
+            개인정보처리방침
+          </Link>
+        </p>
       </div>
     </footer>
   );

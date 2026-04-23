@@ -43,6 +43,15 @@ export default async function ProfilePage() {
       </nav>
 
       <ProfileForm initial={profile} />
+
+      <div className="mt-16 border-t border-border pt-8">
+        <Link
+          href="/profile/delete-account"
+          className="text-xs text-muted-foreground hover:text-red-300"
+        >
+          회원 탈퇴
+        </Link>
+      </div>
     </div>
   );
 }

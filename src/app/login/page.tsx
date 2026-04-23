@@ -48,10 +48,14 @@ export default async function LoginPage({
         </p>
       )}
 
-      <p className="mt-8 text-xs text-muted-foreground">
+      <p className="mt-8 text-xs leading-relaxed text-muted-foreground">
         로그인하면{" "}
-        <a href="/about" className="underline">
-          서비스 이용약관·개인정보처리방침
+        <a href="/terms" className="underline hover:text-foreground">
+          이용약관
+        </a>{" "}
+        및{" "}
+        <a href="/privacy" className="underline hover:text-foreground">
+          개인정보처리방침
         </a>
         에 동의한 것으로 간주합니다.
       </p>

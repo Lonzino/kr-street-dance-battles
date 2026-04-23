@@ -102,3 +102,77 @@ export async function updateUserProfile(
   await getDb().update(schema.users).set(parsed.data).where(eq(schema.users.id, authId));
   return { ok: true };
 }
+
+/**
+ * 회원 탈퇴 — DB 데이터 삭제 + auth.users 삭제 + 익명화.
+ *
+ * 흐름:
+ * 1. source_records.rawContent에서 submitter authId를 익명 해시로 교체
+ * 2. users 테이블 row 삭제 (cascade로 bookmarks/notification_prefs/organizer_claims 자동 삭제)
+ *    edit_log.userId는 onDelete: set null
+ * 3. Supabase auth.users 삭제 (service_role key 필요, 미설정 시 안내만)
+ *
+ * 전제: 호출자가 본인 인증 검증 완료 (서버 액션에서 getCurrentAuthUser).
+ */
+export async function deleteUserAccount(
+  authId: string,
+): Promise<{ ok: true; authDeleted: boolean } | { ok: false; error: string }> {
+  if (!isDbConfigured()) return { ok: false, error: "DB가 연결되지 않았습니다." };
+
+  const db = getDb();
+
+  // 1. source_records anonymize
+  // submitter authId를 SHA256 해시로 교체 (역추적 방지, 통계용 식별자 유지)
+  const hash = await sha256Hex(authId);
+  const anonId = `deleted-${hash.slice(0, 16)}`;
+
+  const allRecords = await db.select().from(schema.sourceRecords);
+  for (const r of allRecords) {
+    if (!r.rawContent) continue;
+    if (!r.rawContent.includes(authId)) continue;
+    try {
+      const obj = JSON.parse(r.rawContent);
+      if (obj.submitter === authId) obj.submitter = anonId;
+      if (obj.userId === authId) obj.userId = anonId;
+      if (obj.userEmail) obj.userEmail = "<deleted>";
+      await db
+        .update(schema.sourceRecords)
+        .set({ rawContent: JSON.stringify(obj) })
+        .where(eq(schema.sourceRecords.id, r.id));
+    } catch {
+      // JSON 아닌 경우 — 단순 문자열 치환
+      await db
+        .update(schema.sourceRecords)
+        .set({ rawContent: r.rawContent.replaceAll(authId, anonId) })
+        .where(eq(schema.sourceRecords.id, r.id));
+    }
+  }
+
+  // 2. users row 삭제 — cascade로 bookmarks/prefs/claims 자동 삭제
+  await db.delete(schema.users).where(eq(schema.users.id, authId));
+
+  // 3. auth.users 삭제 (service_role 필요)
+  let authDeleted = false;
+  try {
+    const { getSupabaseAdminClient, isSupabaseAdminConfigured } = await import(
+      "@/lib/supabase/admin"
+    );
+    if (isSupabaseAdminConfigured()) {
+      const admin = getSupabaseAdminClient();
+      const { error } = await admin.auth.admin.deleteUser(authId);
+      if (!error) authDeleted = true;
+    }
+  } catch {
+    // SUPABASE_SERVICE_ROLE_KEY 미설정 — 무시, 안내만
+  }
+
+  return { ok: true, authDeleted };
+}
+
+async function sha256Hex(input: string): Promise<string> {
+  const data = new TextEncoder().encode(input);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(hash))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
