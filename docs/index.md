@@ -1,5 +1,7 @@
 # Docs
 
+- [ACTIVATION.md](./ACTIVATION.md) — P0~P3 기능 활성화 가이드 (외부 서비스 셋업)
+- [SECURITY-REVIEW.md](./SECURITY-REVIEW.md) — 인증·보안 감사 (배포 전 체크리스트)
 - [TODO.md](./TODO.md) — 남은 작업 우선순위 (Critical / High / Medium / Low)
 - [architecture.md](./architecture.md) — 전체 아키텍처와 데이터 흐름
 - [setup.md](./setup.md) — 로컬 셋업 + Supabase + LLM 활성화
