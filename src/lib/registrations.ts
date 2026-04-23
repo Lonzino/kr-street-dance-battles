@@ -100,7 +100,8 @@ export async function createRegistration(
     return { ok: true, id: inserted.id, status: initialStatus };
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    if (msg.includes("registrations_user_category_uniq")) {
+    // partial unique index — cancelled 외 활성 신청만 차단
+    if (msg.includes("registrations_user_category_active_uniq")) {
       return { ok: false, error: "이미 이 부문에 신청하셨습니다." };
     }
     return { ok: false, error: msg };

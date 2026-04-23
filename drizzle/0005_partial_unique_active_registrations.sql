@@ -1,0 +1,2 @@
+DROP INDEX "registrations_user_category_uniq";--> statement-breakpoint
+CREATE UNIQUE INDEX "registrations_user_category_active_uniq" ON "registrations" USING btree ("user_id","category_id") WHERE status <> 'cancelled';

@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import {
   boolean,
   index,
@@ -465,7 +466,11 @@ export const registrations = pgTable(
       .$onUpdateFn(() => new Date()),
   },
   (t) => [
-    uniqueIndex("registrations_user_category_uniq").on(t.userId, t.categoryId),
+    // 활성 신청만 unique — 취소(status='cancelled') 후 재신청 가능.
+    // 안 하면 cancel 후 register-form에서 "신청 가능"으로 보이는데 INSERT 시 unique 위반.
+    uniqueIndex("registrations_user_category_active_uniq")
+      .on(t.userId, t.categoryId)
+      .where(sql`status <> 'cancelled'`),
     uniqueIndex("registrations_token_uniq").on(t.checkInToken),
     index("registrations_category_idx").on(t.categoryId),
     index("registrations_user_idx").on(t.userId),
