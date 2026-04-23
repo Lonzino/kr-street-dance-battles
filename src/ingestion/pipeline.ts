@@ -65,11 +65,7 @@ export async function ingest(input: string): Promise<IngestResult> {
     )
     .limit(1);
 
-  if (
-    existing &&
-    existing.status !== "raw" &&
-    existing.content === fetched.rawContent
-  ) {
+  if (existing && existing.status !== "raw" && existing.content === fetched.rawContent) {
     return {
       recordId,
       confidence: existing.confidence ?? 0,

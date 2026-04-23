@@ -174,9 +174,8 @@ export async function getBattlesByCrew(crew: Crew): Promise<{ battle: Battle; ra
 export async function findCrewSlugByName(name: string): Promise<string | undefined> {
   const lower = name.toLowerCase();
   const crews = await getAllCrews();
-  return crews.find(
-    (c) => c.name.toLowerCase() === lower || c.koreanName?.toLowerCase() === lower,
-  )?.slug;
+  return crews.find((c) => c.name.toLowerCase() === lower || c.koreanName?.toLowerCase() === lower)
+    ?.slug;
 }
 
 // ────────────────────────────────────────────────

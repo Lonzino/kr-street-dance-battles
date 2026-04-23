@@ -48,7 +48,9 @@ export const instagramAdapter: SourceAdapter = {
 
       const rawContent = [title, description].filter(Boolean).join("\n\n");
       if (!rawContent) {
-        throw new Error("Instagram OG 메타 비어있음 (로그인 페이지일 가능성). 캡션 직접 붙여넣기 권장.");
+        throw new Error(
+          "Instagram OG 메타 비어있음 (로그인 페이지일 가능성). 캡션 직접 붙여넣기 권장.",
+        );
       }
 
       return {

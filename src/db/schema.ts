@@ -211,16 +211,13 @@ export const battles = pgTable(
     prize: jsonb("prize").$type<Array<{ rank: string; amount?: number; note?: string }>>(),
     entryFee: integer("entry_fee"),
     posterUrl: text("poster_url"),
-    links: jsonb("links")
-      .notNull()
-      .default([])
-      .$type<
-        Array<{
-          label: string;
-          url: string;
-          type: "instagram" | "youtube" | "registration" | "official" | "tiktok" | "other";
-        }>
-      >(),
+    links: jsonb("links").notNull().default([]).$type<
+      Array<{
+        label: string;
+        url: string;
+        type: "instagram" | "youtube" | "registration" | "official" | "tiktok" | "other";
+      }>
+    >(),
     results: jsonb("results").$type<Array<{ rank: number; dancer?: string; crew?: string }>>(),
     tags: text("tags").array(),
 

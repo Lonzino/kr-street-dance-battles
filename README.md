@@ -87,13 +87,19 @@ docs/
 ## 로드맵
 
 - [x] MVP: JSON 기반 사이트
-- [x] Zod 스키마 + Drizzle DB 레이어
-- [x] LLM 수집 + 검토 큐 스켈레톤
-- [ ] Admin 인증 (Clerk 또는 Supabase Auth)
-- [ ] Vercel 배포
-- [ ] Discord 봇 (제보 채널 → 자동 ingest)
+- [x] Zod 스키마 + Drizzle DB 레이어 (pgEnum, FK)
+- [x] LLM 수집 + 검토 큐 + 승인 액션 (자동화 루프 완성)
+- [x] Admin 인증 (Edge JWT + 비밀번호 + rate limit)
+- [x] 공개 사이트 DB 전환 (admin 승인 즉시 반영)
+- [x] 필터링 UI (장르 / 지역 / 상태)
+- [x] 크루 상세 페이지 + 배틀↔크루 링크
+- [x] SEO 풀세트 (sitemap, robots, og:image, JSON-LD)
+- [x] Discord 봇 + Vercel Cron (자동 상태 갱신)
+- [ ] Vercel 배포 + Supabase 연결
 - [ ] 본인 인스타 계정 자동 polling (Graph API)
-- [ ] 필터링 UI (장르 / 지역 / 포맷)
+- [ ] 풀텍스트 검색
+
+상세 진행: [docs/TODO.md](./docs/TODO.md), [docs/REVIEW-FIXES.md](./docs/REVIEW-FIXES.md)
 
 ## 라이선스
 

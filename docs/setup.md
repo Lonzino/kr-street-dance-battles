@@ -71,17 +71,26 @@ npm run ingest:url -- "5월 4일 부천 힙합 페스티벌. 1on1 힙합/팝핑/
 
 콘솔에 `record=<UUID>, confidence=0.85` 같은 출력. http://localhost:3000/admin/queue 에서 확인.
 
-## 3. Admin 인증 (배포 전 필수)
+## 3. Admin 인증
 
-현재 admin은 **누구나 접근 가능**합니다. 실제 배포 전 다음 중 하나:
+기본 제공: **단일 비밀번호 + JWT 쿠키 (Edge proxy)**.
+`ADMIN_PASSWORD`와 `JWT_SECRET`만 설정하면 즉시 동작.
+인메모리 rate limit (IP당 5회/분) 포함.
 
-### 옵션 A: Clerk (가장 빠름)
+**관련 파일:**
+- `src/proxy.ts` — `/admin/*`, `/api/admin/*` 보호 (Next.js 16 proxy 컨벤션)
+- `src/lib/auth.ts` — JWT 발급/검증, timing-safe 비밀번호 비교
+- `src/app/admin/login/page.tsx` — 로그인 폼 + server action
+
+### 강화 옵션 (운영자 여러 명 / OAuth 필요 시)
+
+#### 옵션 A: Clerk
 
 ```bash
 npm install @clerk/nextjs
 ```
 
-`middleware.ts`:
+`src/proxy.ts` 교체:
 ```ts
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
@@ -96,9 +105,18 @@ export const config = {
 };
 ```
 
-### 옵션 B: Supabase Auth
+#### 옵션 B: Supabase Auth
 
-(Supabase Auth 가이드 별도 작성 예정)
+(별도 가이드 예정)
+
+### Rate limit 강화 (다중 인스턴스)
+
+현재 `src/lib/rate-limit.ts`는 인메모리 — Vercel 인스턴스마다 분리됨.
+프로덕션에서 정확한 제한 필요 시 Upstash Redis로 교체:
+
+```bash
+npm install @upstash/ratelimit @upstash/redis
+```
 
 ## 4. Vercel 배포
 

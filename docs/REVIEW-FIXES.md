@@ -303,27 +303,34 @@
 
 ---
 
-## 체크리스트 포맷 (진행 시 여기서 업데이트)
+## 체크리스트 (2026-04-23 갱신)
 
-- [ ] C1 공개 사이트 DB 전환
-- [ ] C2 CI·타입체크 수정
-- [ ] C3 `/api/ingest` 엔드포인트
-- [ ] C4 프롬프트 인젝션 방어
-- [ ] C5 중복 LLM 호출 가드
-- [ ] H1 Zod/Drizzle 스키마 통일
-- [ ] H2 FK 추가
-- [ ] H3 timingSafe compare
-- [ ] H4 로그인 rate limit
-- [ ] H5 logout 303 + origin 수정
-- [ ] H6 IG 어댑터 timeout/ok 체크
-- [ ] H7 posterUrl 렌더 또는 제거
-- [ ] H8 seed 벌크 insert
-- [ ] H9 loading.tsx 커밋
-- [ ] M1 updatedAt 자동 갱신
-- [ ] M2 풀텍스트 검색
-- [ ] M3 FilterBar 최적화
-- [ ] M4 크루 매칭 개선
-- [ ] M5 LLM 모델 상수화
-- [ ] M6 eventStatus 분기
-- [ ] M7 LLM 실패 DB 반영
-- [ ] L1~L6 문서/설정 정리
+배포 차단 항목(Critical+High) 전부 완료 ✅
+
+- [x] C1 공개 사이트 DB 전환 ✅ (lib/data.ts async, JSON fallback)
+- [x] C2 CI·타입체크 수정 ✅ (biome migrate, services/** exclude)
+- [x] C3 `/api/ingest` 엔드포인트 ✅ (Round 4에서 이미 구현)
+- [x] C4 프롬프트 인젝션 방어 ✅ (XML 태그 + 패턴 감지 + confidence cap)
+- [x] C5 중복 LLM 호출 가드 ✅ (raw_content 동일 시 스킵)
+- [x] H1 Zod/Drizzle 스키마 통일 ✅ (pgEnum 6개)
+- [x] H2 FK 추가 ✅ (battles.sourceRecordId → sourceRecords)
+- [x] H3 timingSafe compare ✅ (길이 차이 흡수)
+- [x] H4 로그인 rate limit ✅ (인메모리 best-effort, Upstash 권장)
+- [x] H5 logout 303 + origin 수정 ✅
+- [x] H6 IG 어댑터 timeout/ok 체크 ✅ (AbortController 10s)
+- [x] H7 posterUrl 렌더 ✅ (next/image)
+- [x] H8 seed 벌크 insert ✅ (트랜잭션 + values array)
+- [x] H9 loading.tsx 커밋 ✅
+- [x] M1 updatedAt 자동 갱신 ✅ ($onUpdateFn)
+- [ ] M2 풀텍스트 검색 — Postgres tsvector (배포 후)
+- [ ] M3 FilterBar 최적화 — useOptimistic (필요 시)
+- [ ] M4 크루 매칭 개선 — alias 테이블 (장기)
+- [x] M5 LLM 모델 상수화 ✅ (lib/constants.ts)
+- [x] M6 eventStatus 분기 ✅ (offers.availability도 status별)
+- [x] M7 LLM 실패 DB 반영 ✅ (warnings + status 유지)
+- [x] L1 next.config images.remotePatterns ✅
+- [x] L2 setup.md proxy 컨벤션 반영 + rate limit 강화 가이드 ✅
+- [x] L3 docs/TODO.md 갱신 ✅
+- [x] L4 README 로드맵 갱신 ✅
+- [x] L5 biome lint:fix 적용 ✅
+- [ ] L6 drizzle/ 디렉토리 — db:generate 사용 시 자동 생성

@@ -10,11 +10,11 @@
       "*.tsx",
       "*.js",
       "*.json",
-      "!!**/node_modules",
-      "!!**/.next",
-      "!!**/drizzle",
-      "!!**/src/data/**",
-      "!!**/**/*.css"
+      "!**/node_modules",
+      "!**/.next",
+      "!**/drizzle",
+      "!src/data",
+      "!**/*.css"
     ]
   },
   "formatter": {

@@ -50,6 +50,11 @@ export default async function BattleDetailPage({ params }: { params: Promise<{ s
     );
   }
 
+  // Schema.org Event status:
+  // - cancelled: EventCancelled (전용 enum 있음)
+  // - finished/ongoing/upcoming/registration: EventScheduled
+  //   (Schema.org에 EventCompleted enum은 없음. Google은 endDate < now 보고 과거 이벤트로 처리)
+  // 과거 이벤트도 JSON-LD 유지 — Google Knowledge Graph 및 검색 결과 보강.
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "DanceEvent",
@@ -71,12 +76,18 @@ export default async function BattleDetailPage({ params }: { params: Promise<{ s
       address: battle.venue.address,
     },
     organizer: { "@type": "Organization", name: battle.organizer },
+    // 과거 이벤트는 SoldOut, registration이면 InStock
     offers: battle.entryFee
       ? {
           "@type": "Offer",
           price: battle.entryFee,
           priceCurrency: "KRW",
-          availability: "https://schema.org/InStock",
+          availability:
+            battle.status === "registration"
+              ? "https://schema.org/InStock"
+              : battle.status === "finished" || battle.status === "ongoing"
+                ? "https://schema.org/SoldOut"
+                : "https://schema.org/PreOrder",
         }
       : undefined,
   };
