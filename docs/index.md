@@ -1,5 +1,6 @@
 # Docs
 
+- **🌟 [CHECKPOINT.md](./CHECKPOINT.md)** — 시작점. 통합 가이드 (개발 + 운영 한 번에)
 - **[OPERATIONS.md](./OPERATIONS.md)** — 운영 매뉴얼 (일상 작업, 장애 대응, 보안 사고)
 - **[SECRETS.md](./SECRETS.md)** — 시크릿 관리 + 회전 절차
 - [ACTIVATION.md](./ACTIVATION.md) — P0~P3 기능 활성화 가이드 (외부 서비스 셋업)
@@ -9,4 +10,4 @@
 - [setup.md](./setup.md) — 로컬 셋업 + Supabase + LLM 활성화
 - [data-sources.md](./data-sources.md) — 데이터 수집 전략과 소스별 어댑터
 
-운영 매뉴얼·장애 대응은 향후 `runbooks/` 추가 예정.
+처음 보는 분: **CHECKPOINT.md → OPERATIONS.md → ACTIVATION.md** 순서로.
