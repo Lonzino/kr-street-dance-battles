@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "node",
+  "packages": {
+    ".": {
+      "changelog-sections": [
+        { "type": "feat", "section": "✨ 기능" },
+        { "type": "fix", "section": "🐛 버그 수정" },
+        { "type": "data", "section": "📊 데이터 추가·수정" },
+        { "type": "perf", "section": "⚡ 성능" },
+        { "type": "refactor", "section": "♻️ 리팩터" },
+        { "type": "docs", "section": "📚 문서", "hidden": false },
+        { "type": "chore", "section": "🧹 잡무", "hidden": true },
+        { "type": "style", "section": "💄 스타일", "hidden": true },
+        { "type": "ci", "section": "👷 CI", "hidden": true },
+        { "type": "test", "section": "✅ 테스트", "hidden": true }
+      ]
+    }
+  },
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": false,
+  "include-v-in-tag": true
+}
