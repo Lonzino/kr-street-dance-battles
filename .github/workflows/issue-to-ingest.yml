@@ -71,7 +71,7 @@ jobs:
           fi
 
       - name: Comment on issue
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           INGEST_STATUS: ${{ steps.ingest.outputs.status }}
           INGEST_HTTP_CODE: ${{ steps.ingest.outputs.http_code }}
@@ -96,7 +96,7 @@ jobs:
 
       - name: Add "queued" label on success
         if: steps.ingest.outputs.status == 'queued'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             github.rest.issues.addLabels({
